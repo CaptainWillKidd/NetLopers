@@ -7,6 +7,10 @@ Team members:
 - Holly Briggs
 - Willian Canuto
 
+TRELLO BOARD
+
+https://trello.com/b/gzqE0bLl/netlopers
+
 🧭 Application Route Design — Sunset Scheduler
 
 This document outlines the primary routing structure for the Sunset Scheduler Blazor web application.
