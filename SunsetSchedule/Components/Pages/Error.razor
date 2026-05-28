@@ -1,5 +1,6 @@
 ﻿@page "/Error"
 @using System.Diagnostics
+@using DiagnosticsActivity = System.Diagnostics.Activity
 
 <PageTitle>Error</PageTitle>
 
@@ -32,5 +33,6 @@
     private bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
 
     protected override void OnInitialized() =>
-        RequestId = Activity.Current?.Id ?? HttpContext?.TraceIdentifier;
+        RequestId = DiagnosticsActivity.Current?.Id
+            ?? HttpContext?.TraceIdentifier;
 }

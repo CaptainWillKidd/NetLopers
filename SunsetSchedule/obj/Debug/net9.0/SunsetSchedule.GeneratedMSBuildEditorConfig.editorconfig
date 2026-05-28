@@ -30,8 +30,28 @@ build_property._RazorSourceGeneratorDebug =
 build_property.EffectiveAnalysisLevelStyle = 9.0
 build_property.EnableCodeStyleSeverity = 
 
+[D:/Current_college_Class_Folders/cse325/Sunset_Scheduler/NetLopers/SunsetSchedule/Components/Activities/ActivityCard.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBY3Rpdml0aWVzXEFjdGl2aXR5Q2FyZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Current_college_Class_Folders/cse325/Sunset_Scheduler/NetLopers/SunsetSchedule/Components/Activities/ActivityForm.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBY3Rpdml0aWVzXEFjdGl2aXR5Rm9ybS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Current_college_Class_Folders/cse325/Sunset_Scheduler/NetLopers/SunsetSchedule/Components/Activities/ActivityList.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBY3Rpdml0aWVzXEFjdGl2aXR5TGlzdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Current_college_Class_Folders/cse325/Sunset_Scheduler/NetLopers/SunsetSchedule/Components/Activities/DeleteActivityButton.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBY3Rpdml0aWVzXERlbGV0ZUFjdGl2aXR5QnV0dG9uLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Current_college_Class_Folders/cse325/Sunset_Scheduler/NetLopers/SunsetSchedule/Components/App.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBcHAucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Current_college_Class_Folders/cse325/Sunset_Scheduler/NetLopers/SunsetSchedule/Components/Pages/Activities/Create.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBY3Rpdml0aWVzXENyZWF0ZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Current_college_Class_Folders/cse325/Sunset_Scheduler/NetLopers/SunsetSchedule/Components/Pages/Counter.razor]

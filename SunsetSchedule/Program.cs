@@ -11,6 +11,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+// builder.Services.AddScoped<ActivityService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -29,5 +31,14 @@ app.UseAntiforgery();
 app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+    db.Database.EnsureCreated();
+
+    DbSeeder.Seed(db);
+}
 
 app.Run();

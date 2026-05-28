@@ -1,0 +1,29 @@
+<EditForm Model="Activity">
+    <DataAnnotationsValidator />
+
+    <div class="mb-3">
+        <label>Name</label>
+        <InputText class="form-control" @bind-Value="Activity.Name" />
+    </div>
+
+    <div class="mb-3">
+        <label>Description</label>
+        <InputTextArea class="form-control" @bind-Value="Activity.Description" />
+    </div>
+
+    <div class="mb-3">
+        <label>Cost</label>
+        <InputSelect class="form-control" @bind-Value="Activity.Cost">
+            @foreach (var cost in Enum.GetValues<CostLevel>())
+            {
+                <option value="@cost">@cost</option>
+            }
+        </InputSelect>
+    </div>
+
+</EditForm>
+
+@code {
+    [Parameter]
+    public Activity Activity { get; set; } = new();
+}
