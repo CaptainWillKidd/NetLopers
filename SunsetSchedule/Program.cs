@@ -1,6 +1,11 @@
 using SunsetSchedule.Components;
+using Microsoft.EntityFrameworkCore;
+using SunsetSchedule.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlite("Data Source=sunsetschedule.db"));
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
