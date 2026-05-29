@@ -1,0 +1,12 @@
+@inject ActivityService ActivityService
+
+<ConfirmDeleteButton ItemName="@activity.Name" OnDelete="DeleteActivity" />
+
+@code {
+    private Activity activity = new();
+
+    private async Task Delete(int id)
+    {
+        await ActivityService.DeleteAsync(id);
+    }
+}

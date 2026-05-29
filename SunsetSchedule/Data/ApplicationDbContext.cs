@@ -10,5 +10,17 @@ public class ApplicationDbContext : DbContext
     {
     }
 
-    public DbSet<Activity> Activities => Set<Activity>();
+    public DbSet<Activity> Activities { get; set; }
+
+    public DbSet<ScheduledActivity> ScheduledActivities { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<ScheduledActivity>()
+            .HasOne(sa => sa.Activity)
+            .WithMany(a => a.ScheduledActivities)
+            .HasForeignKey(sa => sa.ActivityId);
+    }
 }

@@ -33,4 +33,8 @@ public class Activity
 
     // Optional location tag
     public string? Location { get; set; }
+
+    // Navigation property
+    public ICollection<ScheduledActivity> ScheduledActivities { get; set; }
+        = new List<ScheduledActivity>();
 }

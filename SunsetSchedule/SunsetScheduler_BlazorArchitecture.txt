@@ -1,75 +1,91 @@
 SUNSET SCHEDULER (Blazor Server / Web App)
 │
 ├── Pages (ROUTES / SCREENS)
-│   ├── /activities
-│   │   └── Index.razor   ← dashboard list page
-│   │
-│   ├── /activities/create
-│   │   └── Create.razor
-│   │
-│   ├── /activities/edit/{id}
-│   │   └── Edit.razor
-│   │
-│   ├── /schedule
-│   │   └── Index.razor
-│   │
-│   └── /dashboard
-│       └── Dashboard.razor
+│ ├── /activities
+│ │ └── Index.razor ← dashboard list page
+│ │
+│ ├── /activities/create
+│ │ └── Create.razor
+│ │
+│ ├── /activities/edit/{id}
+│ │ └── Edit.razor
+│ │
+│ ├── /scheduledactivities
+│ │ └── Index.razor
+│ │
+│ ├── /scheduledactivities/create
+│ │ └── Create.razor
+│ │
+│ ├── /scheduledactivities/edit/{id}
+│ │ └── Edit.razor
+│ │
+│ ├── /schedule
+│ │ └── Index.razor
+│ │
+│ └── /dashboard
+│ └── Dashboard.razor
 │
 │
 ├── Components (REUSABLE UI BLOCKS)
-│   ├── Activities
-│   │   ├── ActivityList.razor
-│   │   ├── ActivityCard.razor
-│   │   ├── ActivityForm.razor
-│   │   ├── DeleteActivityButton.razor
-│   │   └── ActivityFilters.razor
-│   │
-│   ├── Schedule
-│   │   ├── ScheduleList.razor
-│   │   ├── ScheduleCard.razor
-│   │   └── AddToScheduleButton.razor
-│   │
-│   └── Shared
-│       ├── ConfirmDialog.razor
-│       ├── LoadingSpinner.razor
-│       └── ErrorMessage.razor
+│ ├── Activities
+│ │ ├── ActivityList.razor
+│ │ ├── ActivityCard.razor
+│ │ ├── ActivityForm.razor
+│ │ └── ActivityFilters.razor
+│ │
+│ ├── ScheduledActivities
+│ │ ├── ScheduledActivityList.razor
+│ │ ├── ScheduledActivityCard.razor
+│ │ ├── ScheduledActivityForm.razor
+│ │
+│ ├── Schedule
+│ │ ├── ScheduleList.razor
+│ │ ├── ScheduleCard.razor
+│ │ └── AddToScheduleButton.razor
+│ │
+│ └── Shared
+│ ├── ConfirmDialog.razor
+│ ├── LoadingSpinner.razor
+│ └── ErrorMessage.razor
+│ └── EmptyState.razor
+│ └── ConfirmDeleteButton.razor
 │
 │
 ├── Data Layer (DATABASE / EF CORE)
-│   ├── ApplicationDbContext.cs
-│   ├── DbSeeder.cs
-│   └── Migrations/
+│ ├── ApplicationDbContext.cs
+│ ├── DbSeeder.cs
+│ └── Migrations/
 │
 │
 ├── Models (DATA STRUCTURES)
-│   ├── Activity.cs
-│   ├── ScheduleItem.cs
-│   └── Enums/
-│       ├── ActivityCategory.cs
-│       ├── CostLevel.cs
-│       ├── TimeOfDay.cs
-│       ├── ActivityEnvironment.cs
-│       ├── WeatherType.cs
-│       └── Season.cs
+│ ├── Activity.cs
+│ ├── ScheduledActivity.cs
+│ └── Enums/
+│ ├── ActivityCategory.cs
+│ ├── CostLevel.cs
+│ ├── TimeOfDay.cs
+│ ├── ActivityEnvironment.cs
+│ ├── WeatherType.cs
+│ └── Season.cs
 │
 │
 ├── Services (BUSINESS LOGIC — VERY IMPORTANT FOR TEAMS)
-│   ├── ActivityService.cs
-│   ├── ScheduleService.cs
-│   ├── WeatherService.cs
-│   └── ActivityGeneratorService.cs
+│ ├── ActivityService.cs
+│ ├── ScheduledActivityService.cs
+│ ├── ScheduleService.cs
+│ ├── WeatherService.cs
+│ └── ActivityGeneratorService.cs
 │
 │
 ├── API / External Integrations
-│   ├── GoogleCalendarService.cs
-│   └── WeatherApiService.cs
+│ ├── GoogleCalendarService.cs
+│ └── WeatherApiService.cs
 │
 │
 └── wwwroot
-    ├── css/
-    ├── js/
-    └── images/
+├── css/
+├── js/
+└── images/
 
 
 _________________________________________________________________________
