@@ -1,0 +1,126 @@
+SUNSET SCHEDULER (Blazor Server / Web App)
+│
+├── Pages (ROUTES / SCREENS)
+│   ├── /activities
+│   │   └── Index.razor   ← dashboard list page
+│   │
+│   ├── /activities/create
+│   │   └── Create.razor
+│   │
+│   ├── /activities/edit/{id}
+│   │   └── Edit.razor
+│   │
+│   ├── /schedule
+│   │   └── Index.razor
+│   │
+│   └── /dashboard
+│       └── Dashboard.razor
+│
+│
+├── Components (REUSABLE UI BLOCKS)
+│   ├── Activities
+│   │   ├── ActivityList.razor
+│   │   ├── ActivityCard.razor
+│   │   ├── ActivityForm.razor
+│   │   ├── DeleteActivityButton.razor
+│   │   └── ActivityFilters.razor
+│   │
+│   ├── Schedule
+│   │   ├── ScheduleList.razor
+│   │   ├── ScheduleCard.razor
+│   │   └── AddToScheduleButton.razor
+│   │
+│   └── Shared
+│       ├── ConfirmDialog.razor
+│       ├── LoadingSpinner.razor
+│       └── ErrorMessage.razor
+│
+│
+├── Data Layer (DATABASE / EF CORE)
+│   ├── ApplicationDbContext.cs
+│   ├── DbSeeder.cs
+│   └── Migrations/
+│
+│
+├── Models (DATA STRUCTURES)
+│   ├── Activity.cs
+│   ├── ScheduleItem.cs
+│   └── Enums/
+│       ├── ActivityCategory.cs
+│       ├── CostLevel.cs
+│       ├── TimeOfDay.cs
+│       ├── ActivityEnvironment.cs
+│       ├── WeatherType.cs
+│       └── Season.cs
+│
+│
+├── Services (BUSINESS LOGIC — VERY IMPORTANT FOR TEAMS)
+│   ├── ActivityService.cs
+│   ├── ScheduleService.cs
+│   ├── WeatherService.cs
+│   └── ActivityGeneratorService.cs
+│
+│
+├── API / External Integrations
+│   ├── GoogleCalendarService.cs
+│   └── WeatherApiService.cs
+│
+│
+└── wwwroot
+    ├── css/
+    ├── js/
+    └── images/
+
+
+_________________________________________________________________________
+
+HOW DATA FLOWS
+_________________________________________________________________________
+
+/activities
+-------------------------------------------------------------------
+
+ACTIVITIES LIST
+
+Index.razor (Page)
+        ↓
+ActivityService.GetAll()
+        ↓
+ApplicationDbContext (SQLite)
+        ↓
+Returns List<Activity>
+        ↓
+ActivityList.razor
+        ↓
+ActivityCard.razor (repeats per item)
+
+
+
+-------------------------------------------------------------------
+
+ACTIVITIES CREATE
+
+Create.razor (Page)
+        ↓
+ActivityForm.razor (Component)
+        ↓
+ActivityService.Create()
+        ↓
+SQLite DB
+        ↓
+Navigation → /activities
+
+
+-------------------------------------------------------------------
+
+ACTIVITIES DELETE
+
+ActivityCard
+        ↓
+DeleteActivityButton
+        ↓
+ActivityService.Delete(id)
+        ↓
+DB update
+        ↓
+UI refresh

@@ -1,9 +1,18 @@
 @page "/activities/create"
+@rendermode InteractiveServer
+@inject ActivityService ActivityService
+@inject NavigationManager Nav
 
 <h3>Create Activity</h3>
 
-<ActivityForm Activity="activity" />
+<ActivityForm Model="@activity" OnSave="CreateActivity" ButtonText="Create" />
 
 @code {
     private Activity activity = new();
+
+    private async Task CreateActivity(Activity a)
+    {
+        await ActivityService.CreateAsync(a);
+        Nav.NavigateTo("/activities");
+    }
 }

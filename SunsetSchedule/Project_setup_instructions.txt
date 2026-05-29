@@ -1,0 +1,64 @@
+## Project Setup
+
+When setting up the database in your environment for the first time, follow these instructions.
+
+### 1. Verify that .NET 9 SDK is installed
+
+Run the following command:
+
+```bash
+dotnet --list-sdks
+```
+
+You should see output similar to:
+
+```text
+9.0.101 [C:\Program Files\dotnet\sdk]
+```
+
+If you do not see a `9.x` version installed, install the .NET 9 SDK with:
+
+```bash
+winget install Microsoft.DotNet.SDK.9
+```
+
+After installation:
+
+* Restart VS Code
+* Open a new terminal
+
+Then verify the installation:
+
+```bash
+dotnet --version
+```
+
+---
+
+### 2. Navigate to the project folder
+
+Make sure your terminal is inside the project directory containing the `.csproj` file.
+
+---
+
+### 3. Restore project packages
+
+```bash
+dotnet restore
+```
+
+---
+
+### 4. Apply database migrations
+
+```bash
+dotnet ef database update
+```
+
+---
+
+### 5. Run the project
+
+```bash
+dotnet run
+```

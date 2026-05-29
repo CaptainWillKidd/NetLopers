@@ -1,0 +1,13 @@
+@using SunsetSchedule.Models
+
+@foreach (var a in Activities)
+{
+    <ActivityCard Activity="a" OnDelete="OnDelete" OnEdit="OnEdit" />
+}
+
+@code {
+    [Parameter] public List<Activity> Activities { get; set; } = new();
+
+    [Parameter] public EventCallback<int> OnDelete { get; set; }
+    [Parameter] public EventCallback<int> OnEdit { get; set; }
+}

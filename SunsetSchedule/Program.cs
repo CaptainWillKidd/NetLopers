@@ -1,6 +1,7 @@
 using SunsetSchedule.Components;
 using Microsoft.EntityFrameworkCore;
 using SunsetSchedule.Data;
+using SunsetSchedule.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +12,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-// builder.Services.AddScoped<ActivityService>();
+builder.Services.AddScoped<ActivityService>();
 
 var app = builder.Build();
 
