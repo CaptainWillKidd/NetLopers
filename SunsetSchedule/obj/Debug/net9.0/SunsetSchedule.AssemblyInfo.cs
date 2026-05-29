@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SunsetSchedule")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1c5ff6052fe38dc1949f982955491741d021eb25")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+48bef09287a715f525c898c574ca02f75cb6b15a")]
 [assembly: System.Reflection.AssemblyProductAttribute("SunsetSchedule")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SunsetSchedule")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

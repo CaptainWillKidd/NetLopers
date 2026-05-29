@@ -57,13 +57,21 @@ else
 
         <hr />
 
-        <button class="btn btn-primary" @onclick="GoToActivity">
-            View Activity
-        </button>
+        <div class="d-flex gap-2">
 
-        <button class="btn btn-secondary ms-2" @onclick="Back">
-            Back
-        </button>
+            <button class="btn btn-primary" @onclick="GoToActivity">
+                View Activity
+            </button>
+
+            <button class="btn btn-warning" @onclick="EditScheduledActivity">
+                Edit Scheduled Activity
+            </button>
+
+            <button class="btn btn-secondary" @onclick="Back">
+                Back
+            </button>
+
+        </div>
 
     </div>
 }
@@ -94,5 +102,10 @@ else
     private void Back()
     {
         Navigation.NavigateTo("/scheduledactivities");
+    }
+
+    private void EditScheduledActivity()
+    {
+        Navigation.NavigateTo($"/scheduledactivities/edit/{scheduledActivity!.Id}");
     }
 }
