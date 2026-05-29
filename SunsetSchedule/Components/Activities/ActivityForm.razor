@@ -1,0 +1,109 @@
+<EditForm Model="@Model" OnValidSubmit="HandleSubmit">
+    <DataAnnotationsValidator />
+
+    <div class="mb-3">
+        <label>Name</label>
+        <InputText class="form-control" @bind-Value="Model.Name" />
+    </div>
+
+    <div class="mb-3">
+        <label>Description</label>
+        <InputTextArea class="form-control" @bind-Value="Model.Description" />
+    </div>
+
+    <!-- CATEGORY -->
+    <div class="mb-3">
+        <label>Category</label>
+        <InputSelect class="form-control" @bind-Value="Model.Category">
+            @foreach (var c in Enum.GetValues<ActivityCategory>())
+            {
+                <option value="@c">@c</option>
+            }
+        </InputSelect>
+    </div>
+
+    <!-- COST -->
+    <div class="mb-3">
+        <label>Cost</label>
+        <InputSelect class="form-control" @bind-Value="Model.Cost">
+            @foreach (var c in Enum.GetValues<CostLevel>())
+            {
+                <option value="@c">@c</option>
+            }
+        </InputSelect>
+    </div>
+
+    <!-- PARTICIPANTS -->
+    <div class="row">
+        <div class="col">
+            <label>Min Participants</label>
+            <InputNumber class="form-control" @bind-Value="Model.MinParticipants" />
+        </div>
+
+        <div class="col">
+            <label>Max Participants</label>
+            <InputNumber class="form-control" @bind-Value="Model.MaxParticipants" />
+        </div>
+    </div>
+
+    <!-- TIME -->
+    <div class="mb-3 mt-2">
+        <label>Time of Day</label>
+        <InputSelect class="form-control" @bind-Value="Model.TimeOfDay">
+            @foreach (var t in Enum.GetValues<TimeOfDay>())
+            {
+                <option value="@t">@t</option>
+            }
+        </InputSelect>
+    </div>
+
+    <!-- ENVIRONMENT -->
+    <div class="mb-3">
+        <label>Environment</label>
+        <InputSelect class="form-control" @bind-Value="Model.Environment">
+            @foreach (var e in Enum.GetValues<ActivityEnvironment>())
+            {
+                <option value="@e">@e</option>
+            }
+        </InputSelect>
+    </div>
+
+    <!-- WEATHER -->
+    <div class="mb-3">
+        <label>Weather</label>
+        <InputSelect class="form-control" @bind-Value="Model.AllowedWeather">
+            @foreach (var w in Enum.GetValues<WeatherType>())
+            {
+                <option value="@w">@w</option>
+            }
+        </InputSelect>
+    </div>
+
+    <!-- SEASON -->
+    <div class="mb-3">
+        <label>Season</label>
+        <InputSelect class="form-control" @bind-Value="Model.Season">
+            @foreach (var s in Enum.GetValues<Season>())
+            {
+                <option value="@s">@s</option>
+            }
+        </InputSelect>
+    </div>
+
+    <button class="btn btn-primary" type="submit">
+        @ButtonText
+    </button>
+</EditForm>
+
+@code {
+    [Parameter] public Activity Model { get; set; } = new();
+
+    [Parameter] public EventCallback<Activity> OnSave { get; set; }
+
+    [Parameter] public string ButtonText { get; set; } = "Save";
+
+    private async Task HandleSubmit()
+    {
+        await OnSave.InvokeAsync(Model);
+    }
+}

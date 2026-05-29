@@ -1,0 +1,54 @@
+@page "/scheduledactivities"
+@rendermode InteractiveServer
+@inject ScheduledActivityService ScheduledActivityService
+@inject NavigationManager Navigation
+
+<h3>Scheduled Activities</h3>
+
+@if (scheduledActivities is null)
+{
+    <p>Loading...</p>
+}
+else if (!scheduledActivities.Any())
+{
+    <p>No scheduled activities found.</p>
+}
+else
+{
+    @foreach (var sa in scheduledActivities)
+    {
+        <div class="mb-2">
+            <a href="/scheduledactivities/details/@sa.Id" class="fw-bold text-primary text-decoration-none">
+                @sa.Activity.Name
+            </a>
+
+            <button class="btn btn-primary ms-2" @onclick="() => Details(sa.Id)">
+                Details
+            </button>
+
+            <button class="btn btn-danger ms-2" @onclick="() => Delete(sa.Id)">
+                Delete
+            </button>
+        </div>
+    }
+}
+
+@code {
+    private List<ScheduledActivity>? scheduledActivities;
+
+    protected override async Task OnInitializedAsync()
+    {
+        scheduledActivities = await ScheduledActivityService.GetAllAsync();
+    }
+
+    private void Details(int id)
+    {
+        Navigation.NavigateTo($"/scheduledactivities/details/{id}");
+    }
+
+    private async Task Delete(int id)
+    {
+        await ScheduledActivityService.DeleteAsync(id);
+        scheduledActivities = await ScheduledActivityService.GetAllAsync();
+    }
+}

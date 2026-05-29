@@ -1,0 +1,111 @@
+@page "/scheduledactivities/details/{id:int}"
+@rendermode InteractiveServer
+
+@inject ScheduledActivityService ScheduledActivityService
+@inject NavigationManager Navigation
+
+<h3>Scheduled Activity Details</h3>
+
+@if (scheduledActivity is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="card p-3">
+
+        <h4>
+            @if (scheduledActivity.Activity != null)
+            {
+                <a href="/activities/details/@scheduledActivity.ActivityId" class="text-decoration-none">
+                    @scheduledActivity.Activity.Name
+                </a>
+            }
+            else
+            {
+                <span>Unknown Activity</span>
+            }
+        </h4>
+
+        <hr />
+
+        <p>
+            <strong>Start:</strong>
+            @scheduledActivity.StartTime
+        </p>
+
+        @if (scheduledActivity.EndTime.HasValue)
+        {
+            <p>
+                <strong>End:</strong>
+                @scheduledActivity.EndTime.Value
+            </p>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(scheduledActivity.Notes))
+        {
+            <p>
+                <strong>Notes:</strong>
+                @scheduledActivity.Notes
+            </p>
+        }
+
+        <p>
+            <strong>User:</strong>
+            @scheduledActivity.UserId
+        </p>
+
+        <hr />
+
+        <div class="d-flex gap-2">
+
+            <button class="btn btn-primary" @onclick="GoToActivity">
+                View Activity
+            </button>
+
+            <button class="btn btn-warning" @onclick="EditScheduledActivity">
+                Edit Scheduled Activity
+            </button>
+
+            <button class="btn btn-secondary" @onclick="Back">
+                Back
+            </button>
+
+        </div>
+
+    </div>
+}
+
+@code {
+    [Parameter] public int id { get; set; }
+
+    private ScheduledActivity? scheduledActivity;
+
+    protected override async Task OnInitializedAsync()
+    {
+        scheduledActivity = await ScheduledActivityService.GetByIdAsync(id);
+
+        if (scheduledActivity is null)
+        {
+            Navigation.NavigateTo("/scheduledactivities");
+        }
+    }
+
+    private void GoToActivity()
+    {
+        if (scheduledActivity?.ActivityId != null)
+        {
+            Navigation.NavigateTo($"/activities/details/{scheduledActivity.ActivityId}");
+        }
+    }
+
+    private void Back()
+    {
+        Navigation.NavigateTo("/scheduledactivities");
+    }
+
+    private void EditScheduledActivity()
+    {
+        Navigation.NavigateTo($"/scheduledactivities/edit/{scheduledActivity!.Id}");
+    }
+}

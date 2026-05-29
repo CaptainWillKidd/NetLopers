@@ -1,0 +1,75 @@
+@page "/activities"
+@rendermode InteractiveServer
+@inject ActivityService ActivityService
+@inject NavigationManager Navigation
+@inject IJSRuntime JS
+
+<h3>Activities</h3>
+
+@if (activities is null)
+{
+    <p>Loading...</p>
+}
+else if (!activities.Any())
+{
+    <p>No activities found.</p>
+}
+else
+{
+    @foreach (var a in activities)
+    {
+        <div class="mb-2">
+            <strong>
+                <button class="btn btn-link p-0" @onclick="() => ViewDetails(a.Id)">
+                    @a.Name
+                </button>
+            </strong>
+
+            <button class="btn btn-primary ms-2" @onclick="() => Edit(a.Id)">
+                Edit
+            </button>
+
+            <button class="btn btn-danger ms-2" @onclick="() => Delete(a.Id)">
+                Delete
+            </button>
+        </div>
+    }
+}
+
+@code {
+    private List<Activity>? activities;
+
+    protected override async Task OnInitializedAsync()
+    {
+        activities = await ActivityService.GetAllAsync();
+    }
+
+    private void Edit(int id)
+    {
+        Navigation.NavigateTo($"/activities/edit/{id}");
+    }
+
+    private async Task Delete(int id)
+    {
+        var scheduledCount = await ActivityService.GetScheduledCountAsync(id);
+
+        if (scheduledCount > 0)
+        {
+            var confirmed = await JS.InvokeAsync<bool>(
+                "confirm",
+                $"This activity has {scheduledCount} scheduled entries. Deleting it will also remove them. Continue?"
+            );
+
+            if (!confirmed)
+                return;
+        }
+
+        await ActivityService.DeleteAsync(id);
+        activities = await ActivityService.GetAllAsync();
+    }
+
+    private void ViewDetails(int id)
+    {
+        Navigation.NavigateTo($"/activities/details/{id}");
+    }
+}

@@ -1,0 +1,108 @@
+@page "/activities/details/{id:int}"
+@rendermode InteractiveServer
+
+@inject ActivityService ActivityService
+@inject ScheduledActivityService ScheduledActivityService
+@inject NavigationManager Navigation
+
+<h3>Activity Details</h3>
+
+@if (activity is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="card p-3 mb-3">
+        <h4>@activity.Name</h4>
+        <p>@activity.Description</p>
+
+        <hr />
+
+        <p><strong>Location:</strong> @activity.Location</p>
+        <p><strong>Category:</strong> @activity.Category</p>
+        <p><strong>Cost:</strong> @activity.Cost</p>
+        <p><strong>Duration:</strong> @activity.DurationMinutes minutes</p>
+
+        <hr />
+
+        <p>
+            <strong>Total Scheduled Uses:</strong>
+            @scheduledCount
+        </p>
+
+        <button class="btn btn-primary" @onclick="Edit">Edit</button>
+        <button class="btn btn-secondary ms-2" @onclick="Back">Back</button>
+    </div>
+
+    <div class="card p-3">
+        <h5>Scheduled Instances</h5>
+
+        @if (scheduled is null)
+        {
+            <p>Loading schedule...</p>
+        }
+        else if (!scheduled.Any())
+        {
+            <p class="text-muted">No scheduled activities for this item.</p>
+        }
+        else
+        {
+            @foreach (var s in scheduled)
+            {
+                <div class="border rounded p-2 mb-2">
+                    <div>
+                        <strong>Start:</strong> @s.StartTime
+                    </div>
+
+                    @if (s.EndTime.HasValue)
+                    {
+                        <div>
+                            <strong>End:</strong> @s.EndTime.Value
+                        </div>
+                    }
+
+                    @if (!string.IsNullOrWhiteSpace(s.Notes))
+                    {
+                        <div>
+                            <strong>Notes:</strong> @s.Notes
+                        </div>
+                    }
+                </div>
+            }
+        }
+    </div>
+}
+
+@code {
+    [Parameter] public int id { get; set; }
+
+    private Activity? activity;
+    private int scheduledCount;
+    private List<ScheduledActivity>? scheduled;
+
+    protected override async Task OnInitializedAsync()
+    {
+        activity = await ActivityService.GetByIdAsync(id);
+
+        if (activity is null)
+        {
+            Navigation.NavigateTo("/activities");
+            return;
+        }
+
+        scheduledCount = await ActivityService.GetScheduledCountAsync(id);
+
+        scheduled = await ScheduledActivityService.GetAllByActivityIdAsync(id);
+    }
+
+    private void Edit()
+    {
+        Navigation.NavigateTo($"/activities/edit/{id}");
+    }
+
+    private void Back()
+    {
+        Navigation.NavigateTo("/activities");
+    }
+}

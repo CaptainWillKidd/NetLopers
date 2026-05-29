@@ -1,0 +1,22 @@
+@page "/scheduledactivities/create"
+@rendermode InteractiveServer
+@inject ScheduledActivityService ScheduledActivityService
+@inject NavigationManager Nav
+
+<h3>Create Scheduled Activity</h3>
+
+<ScheduledActivityForm
+    Model="@scheduledActivity"
+    OnSave="CreateScheduledActivity"
+    ButtonText="Create" />
+
+@code {
+    private ScheduledActivity scheduledActivity = new();
+
+    private async Task CreateScheduledActivity(ScheduledActivity a)
+    {
+        await ScheduledActivityService.CreateAsync(a);
+
+        Nav.NavigateTo("/scheduledactivities");
+    }
+}

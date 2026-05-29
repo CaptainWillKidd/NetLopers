@@ -1,0 +1,37 @@
+@page "/activities/edit/{id:int}"
+@rendermode InteractiveServer
+@inject ActivityService ActivityService
+@inject NavigationManager Navigation
+
+<h3>Edit Activity</h3>
+
+@if (activity is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <ActivityForm Model="@activity" OnSave="UpdateActivity" ButtonText="Update" />
+}
+
+@code {
+    [Parameter] public int id { get; set; }
+
+    private Activity? activity;
+
+    protected override async Task OnInitializedAsync()
+    {
+        activity = await ActivityService.GetByIdAsync(id);
+
+        if (activity is null)
+        {
+            Navigation.NavigateTo("/activities");
+        }
+    }
+
+    private async Task UpdateActivity(Activity a)
+    {
+        await ActivityService.UpdateAsync(a);
+        Navigation.NavigateTo("/activities");
+    }
+}
