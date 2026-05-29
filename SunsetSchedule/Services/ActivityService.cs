@@ -13,39 +13,42 @@ public class ActivityService
         _db = db;
     }
 
-    // GET ALL
     public async Task<List<Activity>> GetAllAsync()
     {
         return await _db.Activities.ToListAsync();
     }
 
-    // GET BY ID
     public async Task<Activity?> GetByIdAsync(int id)
     {
         return await _db.Activities.FindAsync(id);
     }
 
-    // CREATE
     public async Task CreateAsync(Activity activity)
     {
         _db.Activities.Add(activity);
         await _db.SaveChangesAsync();
     }
 
-    // UPDATE
     public async Task UpdateAsync(Activity activity)
     {
         _db.Activities.Update(activity);
         await _db.SaveChangesAsync();
     }
 
-    // DELETE
     public async Task DeleteAsync(int id)
     {
         var activity = await _db.Activities.FindAsync(id);
+
         if (activity is null) return;
 
         _db.Activities.Remove(activity);
+
         await _db.SaveChangesAsync();
+    }
+
+    public async Task<int> GetScheduledCountAsync(int activityId)
+    {
+        return await _db.ScheduledActivities
+            .CountAsync(sa => sa.ActivityId == activityId);
     }
 }

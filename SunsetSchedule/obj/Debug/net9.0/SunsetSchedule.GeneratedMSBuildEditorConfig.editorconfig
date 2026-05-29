@@ -50,6 +50,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBY3Rpdml0aWVzXENyZWF0ZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/Current_college_Class_Folders/cse325/Sunset_Scheduler/NetLopers/SunsetSchedule/Components/Pages/Activities/Details.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBY3Rpdml0aWVzXERldGFpbHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Current_college_Class_Folders/cse325/Sunset_Scheduler/NetLopers/SunsetSchedule/Components/Pages/Activities/Edit.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBY3Rpdml0aWVzXEVkaXQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
@@ -72,6 +76,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/Current_college_Class_Folders/cse325/Sunset_Scheduler/NetLopers/SunsetSchedule/Components/Pages/ScheduledActivities/Create.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xTY2hlZHVsZWRBY3Rpdml0aWVzXENyZWF0ZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Current_college_Class_Folders/cse325/Sunset_Scheduler/NetLopers/SunsetSchedule/Components/Pages/ScheduledActivities/Details.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xTY2hlZHVsZWRBY3Rpdml0aWVzXERldGFpbHMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Current_college_Class_Folders/cse325/Sunset_Scheduler/NetLopers/SunsetSchedule/Components/Pages/ScheduledActivities/Edit.razor]

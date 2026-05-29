@@ -21,6 +21,7 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<ScheduledActivity>()
             .HasOne(sa => sa.Activity)
             .WithMany(a => a.ScheduledActivities)
-            .HasForeignKey(sa => sa.ActivityId);
+            .HasForeignKey(sa => sa.ActivityId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

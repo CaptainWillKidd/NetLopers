@@ -1,0 +1,64 @@
+@using SunsetSchedule.Models
+
+<div class="card p-3 mb-2 shadow-sm">
+
+    <div class="d-flex justify-content-between align-items-center">
+
+        <div>
+            <strong>
+                <button class="btn btn-link p-0" @onclick="ViewDetails">
+                    @ScheduledActivity.Activity?.Name
+                </button>
+            </strong>
+
+            <div class="text-muted">
+                @ScheduledActivity.StartTime
+                @if (ScheduledActivity.EndTime.HasValue)
+                {
+                    <span> - @ScheduledActivity.EndTime.Value</span>
+                }
+            </div>
+
+            @if (!string.IsNullOrWhiteSpace(ScheduledActivity.Notes))
+            {
+                <div class="small">
+                    @ScheduledActivity.Notes
+                </div>
+            }
+        </div>
+
+        <div>
+            <button class="btn btn-outline-primary btn-sm" @onclick="Edit">
+                Edit
+            </button>
+
+            <button class="btn btn-outline-danger btn-sm ms-1" @onclick="Delete">
+                Delete
+            </button>
+        </div>
+
+    </div>
+</div>
+
+@code {
+    [Parameter] public ScheduledActivity ScheduledActivity { get; set; } = default!;
+
+    [Parameter] public EventCallback<int> OnDelete { get; set; }
+
+    [Inject] NavigationManager Navigation { get; set; } = default!;
+
+    private void ViewDetails()
+    {
+        Navigation.NavigateTo($"/scheduledactivities/details/{ScheduledActivity.Id}");
+    }
+
+    private void Edit()
+    {
+        Navigation.NavigateTo($"/scheduledactivities/edit/{ScheduledActivity.Id}");
+    }
+
+    private async Task Delete()
+    {
+        await OnDelete.InvokeAsync(ScheduledActivity.Id);
+    }
+}

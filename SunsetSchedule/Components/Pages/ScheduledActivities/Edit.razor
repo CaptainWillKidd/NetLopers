@@ -1,7 +1,42 @@
-@page "/scheduledactivities/edit/{id:int}"
-
+@page "/scheduledactivities/edit/{Id:int}"
 @rendermode InteractiveServer
-@inject ActivityService ActivityService
+@inject ScheduledActivityService ScheduledActivityService
 @inject NavigationManager Navigation
 
 <h3>Edit Scheduled Activity</h3>
+
+@if (scheduledActivity is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <ScheduledActivityForm
+        Model="@scheduledActivity"
+        OnSave="UpdateScheduledActivity"
+        ButtonText="Update" />
+}
+
+@code {
+    [Parameter] public int Id { get; set; }
+
+    private ScheduledActivity? scheduledActivity;
+
+    protected override async Task OnInitializedAsync()
+    {
+        scheduledActivity =
+            await ScheduledActivityService.GetByIdAsync(Id);
+
+        if (scheduledActivity is null)
+        {
+            Navigation.NavigateTo("/scheduledactivities");
+        }
+    }
+
+    private async Task UpdateScheduledActivity(ScheduledActivity a)
+    {
+        await ScheduledActivityService.UpdateAsync(a);
+
+        Navigation.NavigateTo("/scheduledactivities");
+    }
+}

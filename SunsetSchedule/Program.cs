@@ -13,6 +13,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddScoped<ActivityService>();
+builder.Services.AddScoped<ScheduledActivityService>();
 
 var app = builder.Build();
 
@@ -37,7 +38,7 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-    db.Database.EnsureCreated();
+    db.Database.Migrate();
 
     DbSeeder.Seed(db);
 }
