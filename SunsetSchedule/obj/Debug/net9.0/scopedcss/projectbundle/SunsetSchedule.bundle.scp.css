@@ -1,0 +1,267 @@
+/* /Components/Layout/MainLayout.razor.rz.scp.css */
+.page[b-6sne8imn8g] {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+main[b-6sne8imn8g] {
+    flex: 1;
+}
+
+.sidebar[b-6sne8imn8g] {
+    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+}
+
+.top-row[b-6sne8imn8g] {
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #d6d5d5;
+    justify-content: flex-end;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+}
+
+    .top-row[b-6sne8imn8g]  a, .top-row[b-6sne8imn8g]  .btn-link {
+        white-space: nowrap;
+        margin-left: 1.5rem;
+        text-decoration: none;
+    }
+
+    .top-row[b-6sne8imn8g]  a:hover, .top-row[b-6sne8imn8g]  .btn-link:hover {
+        text-decoration: underline;
+    }
+
+    .top-row[b-6sne8imn8g]  a:first-child {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+@media (max-width: 640.98px) {
+    .top-row[b-6sne8imn8g] {
+        justify-content: space-between;
+    }
+
+    .top-row[b-6sne8imn8g]  a, .top-row[b-6sne8imn8g]  .btn-link {
+        margin-left: 0;
+    }
+}
+
+@media (min-width: 641px) {
+    .page[b-6sne8imn8g] {
+        flex-direction: row;
+    }
+
+    .sidebar[b-6sne8imn8g] {
+        width: 250px;
+        height: 100vh;
+        position: sticky;
+        top: 0;
+    }
+
+    .top-row[b-6sne8imn8g] {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+
+    .top-row.auth[b-6sne8imn8g]  a:first-child {
+        flex: 1;
+        text-align: right;
+        width: 0;
+    }
+
+    .top-row[b-6sne8imn8g], article[b-6sne8imn8g] {
+        padding-left: 2rem !important;
+        padding-right: 1.5rem !important;
+    }
+}
+
+#blazor-error-ui[b-6sne8imn8g] {
+    color-scheme: light only;
+    background: lightyellow;
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+    #blazor-error-ui .dismiss[b-6sne8imn8g] {
+        cursor: pointer;
+        position: absolute;
+        right: 0.75rem;
+        top: 0.5rem;
+    }
+/* /Components/Layout/NavMenu.razor.rz.scp.css */
+.navbar-toggler[b-f6vvfv2q93] {
+    display: none;
+}
+
+.top-row[b-f6vvfv2q93] {
+
+    min-height: 80px;
+
+    background: linear-gradient(
+        180deg,
+        #4D2BFF,
+        #8A3FFC,
+        #F25C3D
+    );
+
+    border-radius: 0 0 12px 0;
+}
+
+.navbar-brand[b-f6vvfv2q93] {
+
+    color: white;
+
+    font-size: 1.3rem;
+
+    font-weight: 600;
+}
+
+.nav-scrollable[b-f6vvfv2q93] {
+
+    min-height: 100vh;
+
+    width: 220px;
+
+    background: linear-gradient(
+        180deg,
+        #4D2BFF,
+        #8A3FFC,
+        #F25C3D
+    );
+
+    padding-top: 20px;
+}
+
+.nav-item[b-f6vvfv2q93] {
+    margin-bottom: 12px;
+}
+
+.nav-item[b-f6vvfv2q93]  .nav-link {
+
+    color: white;
+
+    height: 55px;
+
+    display: flex;
+
+    align-items: center;
+
+    border-radius: 12px;
+
+    padding-left: 20px;
+
+    font-size: 1.05rem;
+
+    transition: .2s;
+}
+
+.nav-item[b-f6vvfv2q93]  .nav-link:hover {
+
+    background: rgba(255,255,255,.15);
+
+    transform: translateX(5px);
+
+}
+
+.nav-item[b-f6vvfv2q93]  a.active {
+
+    background: rgba(255,255,255,.25);
+
+    font-weight: bold;
+
+}
+/* /Components/Pages/ActivitiesCreate.razor.rz.scp.css */
+.page[b-b30ruixws3]{
+    min-height:100vh;
+    background:#f4f4f4;
+}
+
+.content[b-b30ruixws3]{
+    display:flex;
+
+    padding:40px;
+
+    gap:80px;
+}
+
+.form[b-b30ruixws3]{
+    width:500px;
+
+    display:flex;
+
+    flex-direction:column;
+}
+
+h1[b-b30ruixws3]{
+    margin-bottom:20px;
+}
+
+label[b-b30ruixws3]{
+    margin-top:18px;
+
+    font-size:20px;
+}
+
+input[b-b30ruixws3],
+select[b-b30ruixws3]{
+
+    height:40px;
+
+    border:2px solid #8b3dff;
+
+    border-radius:8px;
+
+    padding:8px;
+
+}
+
+button[b-b30ruixws3]{
+
+    margin-top:40px;
+
+    align-self:flex-end;
+
+    background:#f06445;
+
+    border:none;
+
+    padding:15px 30px;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+}
+
+.help[b-b30ruixws3]{
+
+    width:220px;
+
+    height:250px;
+
+    background:
+
+    linear-gradient(
+        180deg,
+        #7b3ff2,
+        #9b5cff
+    );
+
+    color:white;
+
+    padding:20px;
+
+    border-radius:10px;
+
+    font-size:28px;
+
+}
