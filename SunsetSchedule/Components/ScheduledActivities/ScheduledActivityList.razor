@@ -1,0 +1,39 @@
+@using SunsetSchedule.Models
+
+@if (ScheduledActivities is null)
+{
+    <p>Loading...</p>
+}
+else if (!ScheduledActivities.Any())
+{
+    <p>No scheduled activities found.</p>
+}
+else
+{
+    @foreach (var item in ScheduledActivities)
+    {
+        <ScheduledActivityCard ScheduledActivity="item" OnEdit="HandleEdit" OnDelete="HandleDelete" />
+    }
+}
+
+@code {
+
+    [Parameter]
+    public List<ScheduledActivity>? ScheduledActivities { get; set; }
+
+    [Parameter]
+    public EventCallback<int> OnEdit { get; set; }
+
+    [Parameter]
+    public EventCallback<int> OnDelete { get; set; }
+
+    private async Task HandleEdit(int id)
+    {
+        await OnEdit.InvokeAsync(id);
+    }
+
+    private async Task HandleDelete(int id)
+    {
+        await OnDelete.InvokeAsync(id);
+    }
+}
