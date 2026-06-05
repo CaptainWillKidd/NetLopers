@@ -14,7 +14,7 @@ public class Activity
     // Cost filter
     public CostLevel Cost { get; set; }
 
-    // Group size (numeric filtering - more flexible)
+    // Group size
     public int MinParticipants { get; set; }
     public int MaxParticipants { get; set; }
 
@@ -25,7 +25,7 @@ public class Activity
     // Location type
     public ActivityEnvironment Environment { get; set; }
 
-    // Weather compatibility (flags recommended for filtering)
+    // Weather compatibility
     public WeatherType AllowedWeather { get; set; }
 
     // Seasonal availability
@@ -33,6 +33,13 @@ public class Activity
 
     // Optional location tag
     public string? Location { get; set; }
+
+    // Main image shown on details page
+    public string? MainImagePath { get; set; }
+
+    // Gallery images
+    public ICollection<ActivityImage> Images { get; set; }
+        = new List<ActivityImage>();
 
     // Navigation property
     public ICollection<ScheduledActivity> ScheduledActivities { get; set; }

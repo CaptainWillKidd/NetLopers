@@ -1,4 +1,5 @@
 using SunsetSchedule.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.EntityFrameworkCore;
 using SunsetSchedule.Data;
 using SunsetSchedule.Services;
@@ -12,8 +13,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+builder.Services.AddScoped<ImageService>();
 builder.Services.AddScoped<ActivityService>();
 builder.Services.AddScoped<ScheduledActivityService>();
+
 
 var app = builder.Build();
 

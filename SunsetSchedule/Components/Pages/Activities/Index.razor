@@ -18,20 +18,32 @@ else
 {
     @foreach (var a in activities)
     {
-        <div class="mb-2">
-            <strong>
+        var img = a.Images?.FirstOrDefault()?.ImagePath ?? "/images/default-activity.webp";
+
+        <div
+            style="display:flex; align-items:center; gap:12px; margin-bottom:12px; padding:8px; border:1px solid #ddd; border-radius:8px;">
+
+            <!-- Thumbnail -->
+            <img src="@img" style="width:60px; height:60px; object-fit:cover; border-radius:6px; border:1px solid #ccc;" />
+
+            <!-- Content -->
+            <div style="flex-grow:1;">
                 <button class="btn btn-link p-0" @onclick="() => ViewDetails(a.Id)">
                     @a.Name
                 </button>
-            </strong>
+            </div>
 
-            <button class="btn btn-primary ms-2" @onclick="() => Edit(a.Id)">
-                Edit
-            </button>
+            <!-- Actions -->
+            <div style="display:flex; gap:6px;">
+                <button class="btn btn-primary btn-sm" @onclick="() => Edit(a.Id)">
+                    Edit
+                </button>
 
-            <button class="btn btn-danger ms-2" @onclick="() => Delete(a.Id)">
-                Delete
-            </button>
+                <button class="btn btn-danger btn-sm" @onclick="() => Delete(a.Id)">
+                    Delete
+                </button>
+            </div>
+
         </div>
     }
 }

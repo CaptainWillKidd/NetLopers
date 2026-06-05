@@ -1,6 +1,11 @@
 @using SunsetSchedule.Models
 
 <div class="mb-2 border p-2">
+    @if (!string.IsNullOrEmpty(Activity.MainImagePath))
+    {
+        <img src="@Activity.MainImagePath" class="img-fluid" alt="@Activity.Name" />
+    }
+    
     <strong>@Activity.Name</strong>
 
     <button class="btn btn-primary ms-2" @onclick="() => OnEdit.InvokeAsync(Activity.Id)">

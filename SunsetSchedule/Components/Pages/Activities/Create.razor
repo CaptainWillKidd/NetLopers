@@ -1,5 +1,10 @@
 @page "/activities/create"
 @rendermode InteractiveServer
+
+@using SunsetSchedule.Models
+
+@inject IWebHostEnvironment Environment
+
 @inject ActivityService ActivityService
 @inject NavigationManager Nav
 
@@ -10,9 +15,10 @@
 @code {
     private Activity activity = new();
 
-    private async Task CreateActivity(Activity a)
+    private async Task CreateActivity(ActivityFormData data)
     {
-        await ActivityService.CreateAsync(a);
+        await ActivityService.CreateAsync(data.Activity);
+
         Nav.NavigateTo("/activities");
     }
 }
