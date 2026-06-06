@@ -113,3 +113,131 @@ h2, h3 {
 .btn-success:hover {
     opacity: 0.9;
 }
+
+/* Activities Page */
+
+.activities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+}
+
+.activity-item {
+    position: relative;
+    overflow: hidden;
+
+    border-radius: 18px;
+    min-height: 250px;
+
+    background: linear-gradient(
+        135deg,
+        #2C2F6B 0%,
+        #5B3E9D 50%,
+        #E85D3F 100%
+    );
+
+    color: white;
+
+    box-shadow: 0 6px 18px rgba(0,0,0,.15);
+
+    transition:
+        transform .3s ease,
+        box-shadow .3s ease;
+}
+
+
+.activity-item::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    transform: translateY(100%);
+    transition: transform .4s ease;
+
+    pointer-events: none;
+}
+
+.activity-item:hover::before {
+    transform: translateY(0);
+}
+
+
+/* Faz o laranja subir */
+.activity-item:hover::before {
+    transform: translateY(0);
+}
+
+.activity-item:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(0,0,0,.25);
+}
+
+.activity-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+
+    transition: transform .4s ease;
+}
+
+/* Zoom suave na imagem */
+.activity-item:hover .activity-image {
+    transform: scale(1.05);
+}
+
+.activity-content {
+    position: relative;
+    z-index: 2;
+    padding: 1rem;
+}
+
+.activity-name {
+    color: white !important;
+
+    background: none;
+    border: none;
+
+    font-size: 1.3rem;
+    font-weight: 700;
+
+    text-align: left;
+    padding: 0;
+
+    cursor: pointer;
+
+    text-shadow: 0 2px 6px rgba(0,0,0,.3);
+}
+
+.activity-buttons {
+    position: relative;
+    z-index: 3;
+
+    display: flex;
+    justify-content: space-between;
+
+    padding: 0 1rem 1rem 1rem;
+}
+
+
+.activity-buttons .btn-primary {
+    background-color: #E85D3F;
+    border-color: #E85D3F;
+    color: white;
+}
+
+.activity-buttons .btn-primary:hover {
+    background-color: #d14f33;
+    border-color: #d14f33;
+}
+
+
+.activity-buttons .btn-danger {
+    background-color: #2C2F6B;
+    border-color: #2C2F6B;
+    color: white;
+}
+
+.activity-buttons .btn-danger:hover {
+    background-color: #232655;
+    border-color: #232655;
+}

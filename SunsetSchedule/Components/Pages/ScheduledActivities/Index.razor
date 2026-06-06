@@ -17,6 +17,7 @@ else
 {
     @foreach (var sa in scheduledActivities)
     {
+        <div class="activities-grid">
         <div class="mb-2">
             <a href="/scheduledactivities/details/@sa.Id" class="fw-bold text-primary text-decoration-none">
                 @sa.Activity.Name
@@ -29,6 +30,7 @@ else
             <button class="btn btn-danger ms-2" @onclick="() => Delete(sa.Id)">
                 Delete
             </button>
+        </div>
         </div>
     }
 }
