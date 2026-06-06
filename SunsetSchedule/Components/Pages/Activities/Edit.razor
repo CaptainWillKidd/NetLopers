@@ -11,7 +11,7 @@
 }
 else
 {
-    <ActivityForm Model="@activity" OnSave="UpdateActivity" ButtonText="Update" />
+    <ActivityForm Model="@activity" OnSave="UpdateActivity" ButtonText="Save" />
 }
 
 @code {
@@ -29,9 +29,13 @@ else
         }
     }
 
-    private async Task UpdateActivity(Activity a)
+    private async Task UpdateActivity(ActivityFormData data)
     {
-        await ActivityService.UpdateAsync(a);
+        await ActivityService.UpdateAsync(
+            data.Activity,
+            data.MainImage,
+            data.GalleryImages
+        );
         Navigation.NavigateTo("/activities");
     }
 }

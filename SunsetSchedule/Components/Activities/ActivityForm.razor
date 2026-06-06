@@ -1,3 +1,6 @@
+@using Microsoft.AspNetCore.Components.Forms
+@using SunsetSchedule.Models
+
 <EditForm Model="@Model" OnValidSubmit="HandleSubmit">
     <DataAnnotationsValidator />
 
@@ -11,7 +14,6 @@
         <InputTextArea class="form-control" @bind-Value="Model.Description" />
     </div>
 
-    <!-- CATEGORY -->
     <div class="mb-3">
         <label>Category</label>
         <InputSelect class="form-control" @bind-Value="Model.Category">
@@ -22,7 +24,6 @@
         </InputSelect>
     </div>
 
-    <!-- COST -->
     <div class="mb-3">
         <label>Cost</label>
         <InputSelect class="form-control" @bind-Value="Model.Cost">
@@ -33,20 +34,17 @@
         </InputSelect>
     </div>
 
-    <!-- PARTICIPANTS -->
     <div class="row">
         <div class="col">
             <label>Min Participants</label>
             <InputNumber class="form-control" @bind-Value="Model.MinParticipants" />
         </div>
-
         <div class="col">
             <label>Max Participants</label>
             <InputNumber class="form-control" @bind-Value="Model.MaxParticipants" />
         </div>
     </div>
 
-    <!-- TIME -->
     <div class="mb-3 mt-2">
         <label>Time of Day</label>
         <InputSelect class="form-control" @bind-Value="Model.TimeOfDay">
@@ -57,7 +55,6 @@
         </InputSelect>
     </div>
 
-    <!-- ENVIRONMENT -->
     <div class="mb-3">
         <label>Environment</label>
         <InputSelect class="form-control" @bind-Value="Model.Environment">
@@ -68,7 +65,6 @@
         </InputSelect>
     </div>
 
-    <!-- WEATHER -->
     <div class="mb-3">
         <label>Weather</label>
         <InputSelect class="form-control" @bind-Value="Model.AllowedWeather">
@@ -79,7 +75,6 @@
         </InputSelect>
     </div>
 
-    <!-- SEASON -->
     <div class="mb-3">
         <label>Season</label>
         <InputSelect class="form-control" @bind-Value="Model.Season">
@@ -90,6 +85,16 @@
         </InputSelect>
     </div>
 
+    <div class="mb-3">
+        <label>Main Image</label>
+        <InputFile OnChange="HandleMainImageUpload" />
+    </div>
+
+    <div class="mb-3">
+        <label>Gallery Images</label>
+        <InputFile OnChange="HandleGalleryUpload" Multiple />
+    </div>
+
     <button class="btn btn-primary" type="submit">
         @ButtonText
     </button>
@@ -98,12 +103,32 @@
 @code {
     [Parameter] public Activity Model { get; set; } = new();
 
-    [Parameter] public EventCallback<Activity> OnSave { get; set; }
+    [Parameter] public EventCallback<ActivityFormData> OnSave { get; set; }
 
     [Parameter] public string ButtonText { get; set; } = "Save";
 
+    private IBrowserFile? uploadedMainImage;
+    private IReadOnlyList<IBrowserFile> galleryFiles = new List<IBrowserFile>();
+
+    private void HandleMainImageUpload(InputFileChangeEventArgs e)
+    {
+        uploadedMainImage = e.File;
+    }
+
+    private void HandleGalleryUpload(InputFileChangeEventArgs e)
+    {
+        galleryFiles = e.GetMultipleFiles();
+    }
+
     private async Task HandleSubmit()
     {
-        await OnSave.InvokeAsync(Model);
+        var formData = new ActivityFormData
+        {
+            Activity = Model,
+            MainImage = uploadedMainImage,
+            GalleryImages = galleryFiles
+        };
+
+        await OnSave.InvokeAsync(formData);
     }
 }

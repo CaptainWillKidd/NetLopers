@@ -254,6 +254,34 @@ public static class DbSeeder
             );
 
             db.SaveChanges();
+
+            if (!db.ActivityImages.Any())
+            {
+                var activities = db.Activities.ToDictionary(a => a.Name);
+
+                db.ActivityImages.AddRange(
+                    new ActivityImage
+                    {
+                        ActivityId = activities["Hike Bridal Veil Falls"].Id,
+                        ImagePath = "/images/bridalveilfalls.webp",
+                        DisplayOrder = 1
+                    },
+                    new ActivityImage
+                    {
+                        ActivityId = activities["Hike Bridal Veil Falls"].Id,
+                        ImagePath = "/images/bridalveilfalls2.webp",
+                        DisplayOrder = 2
+                    },
+                    new ActivityImage
+                    {
+                        ActivityId = activities["Hike Bridal Veil Falls"].Id,
+                        ImagePath = "/images/bridalveilfalls3.webp",
+                        DisplayOrder = 2
+                    }
+                );
+
+                db.SaveChanges();
+            }
         }
 
         // ----------------------------
