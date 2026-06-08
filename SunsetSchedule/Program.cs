@@ -9,19 +9,16 @@ Console.WriteLine($"ENV: {builder.Environment.EnvironmentName}");
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-// This if statement runs SQlite for dev environment and Postgres for production 
-// if (builder.Environment.IsDevelopment())
-// {
-//     builder.Services.AddDbContext<ApplicationDbContext>(options =>
-//         options.UseSqlite(connectionString));
-// }
-// else
-// {
-//     builder.Services.AddDbContext<ApplicationDbContext>(options =>
-//         options.UseNpgsql(connectionString));
-// }
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(connectionString));
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        options.UseSqlite(connectionString));
+}
+else
+{
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        options.UseNpgsql(connectionString));
+}
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
@@ -64,7 +61,14 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-    db.Database.Migrate();
+    if (app.Environment.IsDevelopment())
+    {
+        db.Database.EnsureCreated();
+    }
+    else
+    {
+        db.Database.Migrate();
+    }
 
     DbSeeder.Seed(db);
 }
