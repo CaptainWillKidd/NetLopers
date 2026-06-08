@@ -15,9 +15,9 @@
 @code {
     private Activity activity = new();
 
-    private async Task CreateActivity(ActivityFormData data)
+    private async Task CreateActivity(Activity activity)
     {
-        await ActivityService.CreateAsync(data.Activity);
+        await ActivityService.CreateAsync(activity);
 
         Nav.NavigateTo("/activities");
     }
