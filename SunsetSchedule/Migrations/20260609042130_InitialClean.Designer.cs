@@ -11,8 +11,8 @@ using SunsetSchedule.Data;
 namespace SunsetSchedule.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260609040930_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260609042130_InitialClean")]
+    partial class InitialClean
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
