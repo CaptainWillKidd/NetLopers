@@ -15,6 +15,8 @@ RENDER PRODUCTION SITE
 
 https://sunset-schedule.onrender.com
 
+If you need to change the database, you need to run this command in the terminal: dotnet ef database update
+
 🧭 Application Route Design — Sunset Scheduler
 
 This document outlines the primary routing structure for the Sunset Scheduler Blazor web application.
