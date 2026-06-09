@@ -29,13 +29,9 @@ else
         }
     }
 
-    private async Task UpdateActivity(ActivityFormData data)
+    private async Task UpdateActivity(Activity activity)
     {
-        await ActivityService.UpdateAsync(
-            data.Activity,
-            data.MainImage,
-            data.GalleryImages
-        );
+        await ActivityService.UpdateAsync(activity);
         Navigation.NavigateTo("/activities");
     }
 }
