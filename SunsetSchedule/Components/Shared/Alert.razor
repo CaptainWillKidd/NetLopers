@@ -1,0 +1,25 @@
+@namespace SunsetSchedule.Components.Shared
+
+@if (!string.IsNullOrWhiteSpace(Message))
+{
+    <div class="@GetCssClass()" role="alert">
+        @Message
+    </div>
+}
+
+@code {
+    [Parameter] public string? Message { get; set; }
+
+    [Parameter] public AlertType Type { get; set; } = AlertType.Error;
+
+    private string GetCssClass()
+    {
+        return Type switch
+        {
+            AlertType.Success => "alert alert-success",
+            AlertType.Warning => "alert alert-warning",
+            AlertType.Info => "alert alert-info",
+            _ => "alert alert-danger"
+        };
+    }
+}
