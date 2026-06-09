@@ -11,7 +11,7 @@ using SunsetSchedule.Data;
 namespace SunsetSchedule.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260609040129_InitialCreate")]
+    [Migration("20260609040930_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
