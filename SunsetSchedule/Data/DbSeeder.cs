@@ -117,6 +117,60 @@ public static class DbSeeder
                         ActivityId = activities["Hike Bridal Veil Falls"].Id,
                         ImagePath = "/images/bridalveilfalls3.webp",
                         DisplayOrder = 2
+                    },
+                    new ActivityImage
+                    {
+                        ActivityId = activities["Board Game Night"].Id,
+                        ImagePath = "/images/board_gaming.webp",
+                        DisplayOrder = 1
+                    },
+                    new ActivityImage
+                    {
+                        ActivityId = activities["Board Game Night"].Id,
+                        ImagePath = "/images/board_game01.webp",
+                        DisplayOrder = 2
+                    },
+                    new ActivityImage
+                    {
+                        ActivityId = activities["Board Game Night"].Id,
+                        ImagePath = "/images/board_game02.webp",
+                        DisplayOrder = 3
+                    },
+                    new ActivityImage
+                    {
+                        ActivityId = activities["Board Game Night"].Id,
+                        ImagePath = "/images/board_game03.webp",
+                        DisplayOrder = 4
+                    },
+                    new ActivityImage
+                    {
+                        ActivityId = activities["Thanksgiving Point Museum"].Id,
+                        ImagePath = "/images/thanksgiving_point01.webp",
+                        DisplayOrder = 1
+                    },
+                    new ActivityImage
+                    {
+                        ActivityId = activities["Drive Through Alpine Loop"].Id,
+                        ImagePath = "/images/alpine_loop01.webp",
+                        DisplayOrder = 1
+                    },
+                    new ActivityImage
+                    {
+                        ActivityId = activities["Drive Through Alpine Loop"].Id,
+                        ImagePath = "/images/alpine_loop02.webp",
+                        DisplayOrder = 2
+                    },
+                    new ActivityImage
+                    {
+                        ActivityId = activities["Temple Square Lights"].Id,
+                        ImagePath = "/images/temple_square_lights.webp",
+                        DisplayOrder = 1
+                    },
+                    new ActivityImage
+                    {
+                        ActivityId = activities["Temple Square Lights"].Id,
+                        ImagePath = "/images/temple_square_lights02.webp",
+                        DisplayOrder = 1
                     }
                 );
 
