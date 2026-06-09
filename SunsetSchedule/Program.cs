@@ -73,7 +73,14 @@ using (var scope = app.Services.CreateScope())
     // Only seed in development (prevents production duplication issues)
     if (app.Environment.IsDevelopment())
     {
-        DbSeeder.Seed(db);
+        try
+        {
+            DbSeeder.Seed(db);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Seeding failed: " + ex.Message);
+        }
     }
 }
 
