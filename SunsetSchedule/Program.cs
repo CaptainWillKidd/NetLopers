@@ -9,16 +9,8 @@ Console.WriteLine($"ENV: {builder.Environment.EnvironmentName}");
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-if (builder.Environment.IsDevelopment())
-{
-    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
         options.UseNpgsql(connectionString));
-}
-else
-{
-    builder.Services.AddDbContext<ApplicationDbContext>(options =>
-        options.UseNpgsql(connectionString));
-}
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
@@ -72,5 +64,8 @@ using (var scope = app.Services.CreateScope())
 
     DbSeeder.Seed(db);
 }
+
+Console.WriteLine("CONNECTION STRING:");
+Console.WriteLine(builder.Configuration.GetConnectionString("DefaultConnection"));
 
 app.Run();
