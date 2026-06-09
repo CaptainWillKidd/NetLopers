@@ -1,5 +1,8 @@
 @page "/activities/edit/{id:int}"
 @rendermode InteractiveServer
+
+@using SunsetSchedule.Components.Shared
+
 @inject ActivityService ActivityService
 @inject NavigationManager Navigation
 
@@ -11,6 +14,8 @@
 }
 else
 {
+    <Alert Message="@errorMessage" Type="AlertType.Error" />
+
     <ActivityForm Model="@activity" OnSave="UpdateActivity" ButtonText="Save" />
 }
 
@@ -18,6 +23,7 @@ else
     [Parameter] public int id { get; set; }
 
     private Activity? activity;
+    private string? errorMessage;
 
     protected override async Task OnInitializedAsync()
     {
@@ -29,9 +35,17 @@ else
         }
     }
 
-    private async Task UpdateActivity(Activity activity)
+    private async Task UpdateActivity(Activity updatedActivity)
     {
-        await ActivityService.UpdateAsync(activity);
+        var result = await ActivityService.UpdateAsync(updatedActivity);
+
+        if (!result.Success)
+        {
+            errorMessage = result.Error;
+            return;
+        }
+
+        errorMessage = null;
         Navigation.NavigateTo("/activities");
     }
 }
