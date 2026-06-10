@@ -2,22 +2,32 @@
 @rendermode InteractiveServer
 
 @using SunsetSchedule.Models
-
-@inject IWebHostEnvironment Environment
+@using SunsetSchedule.Components.Shared
 
 @inject ActivityService ActivityService
 @inject NavigationManager Nav
 
 <h3>Create Activity</h3>
 
+<Alert Message="@errorMessage" Type="AlertType.Error" />
+
 <ActivityForm Model="@activity" OnSave="CreateActivity" ButtonText="Create" />
 
 @code {
     private Activity activity = new();
+    private string? errorMessage;
 
-    private async Task CreateActivity(ActivityFormData data)
+    private async Task CreateActivity(Activity activity)
     {
-        await ActivityService.CreateAsync(data.Activity);
+        var result = await ActivityService.CreateAsync(activity);
+
+        if (!result.Success)
+        {
+            errorMessage = result.Error;
+            return;
+        }
+
+        errorMessage = null; // optional cleanup
 
         Nav.NavigateTo("/activities");
     }

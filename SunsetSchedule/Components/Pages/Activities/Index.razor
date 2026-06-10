@@ -1,10 +1,14 @@
 @page "/activities"
 @rendermode InteractiveServer
+
+@using SunsetSchedule.Components.Shared
 @inject ActivityService ActivityService
 @inject NavigationManager Navigation
 @inject IJSRuntime JS
 
 <h2>Activities</h2>
+
+<Alert Message="@errorMessage" Type="AlertType.Error" />
 
 @if (activities is null)
 {
@@ -52,8 +56,10 @@ else
 }
 
 @code {
+    
     private List<Activity>? activities;
 
+    private string? errorMessage;
     protected override async Task OnInitializedAsync()
     {
         activities = await ActivityService.GetAllAsync();
@@ -66,6 +72,8 @@ else
 
     private async Task Delete(int id)
     {
+        errorMessage = null;
+
         var scheduledCount = await ActivityService.GetScheduledCountAsync(id);
 
         if (scheduledCount > 0)
@@ -79,7 +87,14 @@ else
                 return;
         }
 
-        await ActivityService.DeleteAsync(id);
+        var result = await ActivityService.DeleteAsync(id);
+
+        if (!result.Success)
+        {
+            errorMessage = result.Error;
+            return;
+        }
+
         activities = await ActivityService.GetAllAsync();
     }
 

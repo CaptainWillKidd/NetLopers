@@ -90,166 +90,6 @@ public static class DbSeeder
                     AllowedWeather = WeatherType.Cold,
                     Season = Season.Winter,
                     Location = "Salt Lake City"
-                },
-
-                new Activity
-                {
-                    Name = "Hot Chocolate Date Night",
-                    Description = "Visit a local café for desserts and drinks.",
-                    Category = ActivityCategory.Food,
-                    Cost = CostLevel.Low,
-                    MinParticipants = 2,
-                    MaxParticipants = 4,
-                    TimeOfDay = TimeOfDay.Evening,
-                    DurationMinutes = 90,
-                    Environment = ActivityEnvironment.Indoor,
-                    AllowedWeather = WeatherType.Any,
-                    Season = Season.Any,
-                    Location = "Orem"
-                },
-
-                new Activity
-                {
-                    Name = "Bean Museum Visit",
-                    Description = "Explore wildlife exhibits at BYU.",
-                    Category = ActivityCategory.Educational,
-                    Cost = CostLevel.Free,
-                    MinParticipants = 1,
-                    MaxParticipants = 15,
-                    TimeOfDay = TimeOfDay.Afternoon,
-                    DurationMinutes = 120,
-                    Environment = ActivityEnvironment.Indoor,
-                    AllowedWeather = WeatherType.Any,
-                    Season = Season.Any,
-                    Location = "Provo"
-                },
-
-                new Activity
-                {
-                    Name = "Snowshoeing at Sundance",
-                    Description = "Winter trail adventure in the mountains.",
-                    Category = ActivityCategory.Exercise,
-                    Cost = CostLevel.Medium,
-                    MinParticipants = 1,
-                    MaxParticipants = 6,
-                    TimeOfDay = TimeOfDay.Morning,
-                    DurationMinutes = 240,
-                    Environment = ActivityEnvironment.Outdoor,
-                    AllowedWeather = WeatherType.Snowy,
-                    Season = Season.Winter,
-                    Location = "Sundance"
-                },
-
-                new Activity
-                {
-                    Name = "Picnic at Canyon Glen Park",
-                    Description = "Relaxing outdoor picnic by the river.",
-                    Category = ActivityCategory.Relaxation,
-                    Cost = CostLevel.Low,
-                    MinParticipants = 2,
-                    MaxParticipants = 12,
-                    TimeOfDay = TimeOfDay.Afternoon,
-                    DurationMinutes = 150,
-                    Environment = ActivityEnvironment.Outdoor,
-                    AllowedWeather = WeatherType.Warm,
-                    Season = Season.Summer,
-                    Location = "Provo"
-                },
-
-                new Activity
-                {
-                    Name = "Family Movie Night",
-                    Description = "Watch a movie together at home.",
-                    Category = ActivityCategory.Entertainment,
-                    Cost = CostLevel.Low,
-                    MinParticipants = 2,
-                    MaxParticipants = 10,
-                    TimeOfDay = TimeOfDay.Evening,
-                    DurationMinutes = 150,
-                    Environment = ActivityEnvironment.Indoor,
-                    AllowedWeather = WeatherType.Any,
-                    Season = Season.Any,
-                    Location = "Home"
-                },
-
-                new Activity
-                {
-                    Name = "Rock Climbing Gym",
-                    Description = "Indoor climbing and bouldering.",
-                    Category = ActivityCategory.Exercise,
-                    Cost = CostLevel.Medium,
-                    MinParticipants = 1,
-                    MaxParticipants = 8,
-                    TimeOfDay = TimeOfDay.Evening,
-                    DurationMinutes = 120,
-                    Environment = ActivityEnvironment.Indoor,
-                    AllowedWeather = WeatherType.Any,
-                    Season = Season.Any,
-                    Location = "Provo"
-                },
-
-                new Activity
-                {
-                    Name = "Farmer's Market",
-                    Description = "Browse local produce and handmade goods.",
-                    Category = ActivityCategory.Social,
-                    Cost = CostLevel.Low,
-                    MinParticipants = 1,
-                    MaxParticipants = 10,
-                    TimeOfDay = TimeOfDay.Morning,
-                    DurationMinutes = 90,
-                    Environment = ActivityEnvironment.Outdoor,
-                    AllowedWeather = WeatherType.Warm,
-                    Season = Season.Summer,
-                    Location = "Downtown Provo"
-                },
-
-                new Activity
-                {
-                    Name = "Escape Room Challenge",
-                    Description = "Solve puzzles with friends or family.",
-                    Category = ActivityCategory.Creative,
-                    Cost = CostLevel.High,
-                    MinParticipants = 2,
-                    MaxParticipants = 8,
-                    TimeOfDay = TimeOfDay.Evening,
-                    DurationMinutes = 90,
-                    Environment = ActivityEnvironment.Indoor,
-                    AllowedWeather = WeatherType.Any,
-                    Season = Season.Any,
-                    Location = "Orem"
-                },
-
-                new Activity
-                {
-                    Name = "Campfire and S'mores",
-                    Description = "Evening campfire in the mountains.",
-                    Category = ActivityCategory.Relaxation,
-                    Cost = CostLevel.Low,
-                    MinParticipants = 2,
-                    MaxParticipants = 15,
-                    TimeOfDay = TimeOfDay.Evening,
-                    DurationMinutes = 180,
-                    Environment = ActivityEnvironment.Outdoor,
-                    AllowedWeather = WeatherType.Warm,
-                    Season = Season.Summer,
-                    Location = "Uintas"
-                },
-
-                new Activity
-                {
-                    Name = "Library Reading Night",
-                    Description = "Attend a local library event or reading hour.",
-                    Category = ActivityCategory.Educational,
-                    Cost = CostLevel.Free,
-                    MinParticipants = 1,
-                    MaxParticipants = 20,
-                    TimeOfDay = TimeOfDay.Evening,
-                    DurationMinutes = 60,
-                    Environment = ActivityEnvironment.Indoor,
-                    AllowedWeather = WeatherType.Any,
-                    Season = Season.Any,
-                    Location = "Local Library"
                 }
             );
 
@@ -277,6 +117,60 @@ public static class DbSeeder
                         ActivityId = activities["Hike Bridal Veil Falls"].Id,
                         ImagePath = "/images/bridalveilfalls3.webp",
                         DisplayOrder = 2
+                    },
+                    new ActivityImage
+                    {
+                        ActivityId = activities["Board Game Night"].Id,
+                        ImagePath = "/images/board_gaming.webp",
+                        DisplayOrder = 1
+                    },
+                    new ActivityImage
+                    {
+                        ActivityId = activities["Board Game Night"].Id,
+                        ImagePath = "/images/board_game01.webp",
+                        DisplayOrder = 2
+                    },
+                    new ActivityImage
+                    {
+                        ActivityId = activities["Board Game Night"].Id,
+                        ImagePath = "/images/board_game02.webp",
+                        DisplayOrder = 3
+                    },
+                    new ActivityImage
+                    {
+                        ActivityId = activities["Board Game Night"].Id,
+                        ImagePath = "/images/board_game03.webp",
+                        DisplayOrder = 4
+                    },
+                    new ActivityImage
+                    {
+                        ActivityId = activities["Thanksgiving Point Museum"].Id,
+                        ImagePath = "/images/thanksgiving_point01.webp",
+                        DisplayOrder = 1
+                    },
+                    new ActivityImage
+                    {
+                        ActivityId = activities["Drive Through Alpine Loop"].Id,
+                        ImagePath = "/images/alpine_loop01.webp",
+                        DisplayOrder = 1
+                    },
+                    new ActivityImage
+                    {
+                        ActivityId = activities["Drive Through Alpine Loop"].Id,
+                        ImagePath = "/images/alpine_loop02.webp",
+                        DisplayOrder = 2
+                    },
+                    new ActivityImage
+                    {
+                        ActivityId = activities["Temple Square Lights"].Id,
+                        ImagePath = "/images/temple_square_lights.webp",
+                        DisplayOrder = 1
+                    },
+                    new ActivityImage
+                    {
+                        ActivityId = activities["Temple Square Lights"].Id,
+                        ImagePath = "/images/temple_square_lights02.webp",
+                        DisplayOrder = 1
                     }
                 );
 
@@ -296,8 +190,8 @@ public static class DbSeeder
                 {
                     ActivityId = activities["Hike Bridal Veil Falls"].Id,
                     UserId = "seed-user-1",
-                    StartTime = DateTime.Now.AddDays(1).AddHours(8),
-                    EndTime = DateTime.Now.AddDays(1).AddHours(10),
+                    StartTime = DateTime.UtcNow.AddDays(1).AddHours(8),
+                    EndTime = DateTime.UtcNow.AddDays(1).AddHours(10),
                     Notes = "Morning hike with family"
                 },
 
@@ -305,8 +199,8 @@ public static class DbSeeder
                 {
                     ActivityId = activities["Board Game Night"].Id,
                     UserId = "seed-user-2",
-                    StartTime = DateTime.Now.AddDays(2).AddHours(18),
-                    EndTime = DateTime.Now.AddDays(2).AddHours(21),
+                    StartTime = DateTime.UtcNow.AddDays(2).AddHours(18),
+                    EndTime = DateTime.UtcNow.AddDays(2).AddHours(21),
                     Notes = "Bring snacks and new games"
                 },
 
@@ -314,8 +208,8 @@ public static class DbSeeder
                 {
                     ActivityId = activities["Thanksgiving Point Museum"].Id,
                     UserId = "seed-user-1",
-                    StartTime = DateTime.Now.AddDays(3).AddHours(13),
-                    EndTime = DateTime.Now.AddDays(3).AddHours(17),
+                    StartTime = DateTime.UtcNow.AddDays(3).AddHours(13),
+                    EndTime = DateTime.UtcNow.AddDays(3).AddHours(17),
                     Notes = "Plan for lunch beforehand"
                 },
 
@@ -323,18 +217,9 @@ public static class DbSeeder
                 {
                     ActivityId = activities["Temple Square Lights"].Id,
                     UserId = "seed-user-3",
-                    StartTime = DateTime.Now.AddDays(4).AddHours(19),
-                    EndTime = DateTime.Now.AddDays(4).AddHours(20).AddMinutes(30),
+                    StartTime = DateTime.UtcNow.AddDays(4).AddHours(19),
+                    EndTime = DateTime.UtcNow.AddDays(4).AddHours(20),
                     Notes = "Evening walk, dress warm"
-                },
-
-                new ScheduledActivity
-                {
-                    ActivityId = activities["Escape Room Challenge"].Id,
-                    UserId = "seed-user-2",
-                    StartTime = DateTime.Now.AddDays(5).AddHours(17),
-                    EndTime = DateTime.Now.AddDays(5).AddHours(18).AddMinutes(30),
-                    Notes = "Book in advance"
                 }
             );
 
