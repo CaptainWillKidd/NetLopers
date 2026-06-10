@@ -15,6 +15,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<ActivityImage> ActivityImages { get; set; }
     public DbSet<ScheduledActivity> ScheduledActivities { get; set; }
 
+    public DbSet<User> Users { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

@@ -1,5 +1,7 @@
 using SunsetSchedule.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.EntityFrameworkCore;
 using SunsetSchedule.Data;
 using SunsetSchedule.Services;
@@ -20,6 +22,13 @@ builder.Services.AddRazorComponents()
 builder.Services.AddScoped<ImageService>();
 builder.Services.AddScoped<ActivityService>();
 builder.Services.AddScoped<ScheduledActivityService>();
+builder.Services.AddScoped<AuthService>();
+
+// Add authentication services
+builder.Services.AddScoped<ProtectedSessionStorage>();
+builder.Services.AddScoped<AuthStateProvider>();
+builder.Services.AddScoped<AuthenticationStateProvider>(sp => sp.GetRequiredService<AuthStateProvider>());
+builder.Services.AddAuthorizationCore();
 
 var app = builder.Build();
 
