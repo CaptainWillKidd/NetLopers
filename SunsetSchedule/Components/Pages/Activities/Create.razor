@@ -1,18 +1,34 @@
 @page "/activities/create"
 @rendermode InteractiveServer
+
+@using SunsetSchedule.Models
+@using SunsetSchedule.Components.Shared
+
 @inject ActivityService ActivityService
 @inject NavigationManager Nav
 
 <h3>Create Activity</h3>
 
+<Alert Message="@errorMessage" Type="AlertType.Error" />
+
 <ActivityForm Model="@activity" OnSave="CreateActivity" ButtonText="Create" />
 
 @code {
     private Activity activity = new();
+    private string? errorMessage;
 
-    private async Task CreateActivity(Activity a)
+    private async Task CreateActivity(Activity activity)
     {
-        await ActivityService.CreateAsync(a);
+        var result = await ActivityService.CreateAsync(activity);
+
+        if (!result.Success)
+        {
+            errorMessage = result.Error;
+            return;
+        }
+
+        errorMessage = null; // optional cleanup
+
         Nav.NavigateTo("/activities");
     }
 }

@@ -14,6 +14,33 @@
 else
 {
     <div class="card p-3 mb-3">
+        @{
+            var images = activity.Images?.ToList() ?? new List<ActivityImage>();
+            var defaultImage = "/images/default-activity.webp";
+
+            var mainImage = images
+                .OrderBy(i => i.DisplayOrder)
+                .FirstOrDefault()?.ImagePath
+                ?? defaultImage;
+
+            var galleryImages = images
+                .OrderBy(i => i.DisplayOrder)
+                .Skip(1)
+                .ToList();
+        }
+
+        <img src="@mainImage" class="img-fluid mb-3" />
+
+        @if (galleryImages.Any())
+        {
+            <div class="gallery">
+                @foreach (var image in galleryImages)
+                {
+                    <img src="@image.ImagePath" class="gallery-thumbnail" />
+                }
+            </div>
+        }
+
         <h4>@activity.Name</h4>
         <p>@activity.Description</p>
 

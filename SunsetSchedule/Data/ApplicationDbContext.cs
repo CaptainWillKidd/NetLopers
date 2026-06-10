@@ -12,6 +12,7 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<Activity> Activities { get; set; }
 
+    public DbSet<ActivityImage> ActivityImages { get; set; }
     public DbSet<ScheduledActivity> ScheduledActivities { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -22,6 +23,12 @@ public class ApplicationDbContext : DbContext
             .HasOne(sa => sa.Activity)
             .WithMany(a => a.ScheduledActivities)
             .HasForeignKey(sa => sa.ActivityId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<ActivityImage>()
+            .HasOne(ai => ai.Activity)
+            .WithMany(a => a.Images)
+            .HasForeignKey(ai => ai.ActivityId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

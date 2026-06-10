@@ -1,17 +1,22 @@
+@using Microsoft.AspNetCore.Components.Forms
+@using SunsetSchedule.Models
+
 <EditForm Model="@Model" OnValidSubmit="HandleSubmit">
     <DataAnnotationsValidator />
+    <ValidationSummary />
 
     <div class="mb-3">
         <label>Name</label>
         <InputText class="form-control" @bind-Value="Model.Name" />
+        <ValidationMessage For="() => Model.Name" />
     </div>
 
     <div class="mb-3">
         <label>Description</label>
         <InputTextArea class="form-control" @bind-Value="Model.Description" />
+        <ValidationMessage For="() => Model.Description" />
     </div>
 
-    <!-- CATEGORY -->
     <div class="mb-3">
         <label>Category</label>
         <InputSelect class="form-control" @bind-Value="Model.Category">
@@ -20,9 +25,9 @@
                 <option value="@c">@c</option>
             }
         </InputSelect>
+        <ValidationMessage For="() => Model.Category" />
     </div>
 
-    <!-- COST -->
     <div class="mb-3">
         <label>Cost</label>
         <InputSelect class="form-control" @bind-Value="Model.Cost">
@@ -31,22 +36,28 @@
                 <option value="@c">@c</option>
             }
         </InputSelect>
+        <ValidationMessage For="() => Model.Cost" />
     </div>
 
-    <!-- PARTICIPANTS -->
+    <div class="mb-3">
+        <label>Duration</label>
+        <InputNumber class="form-control" @bind-Value="Model.DurationMinutes" />
+        <ValidationMessage For="() => Model.DurationMinutes" />
+    </div>
+
     <div class="row">
         <div class="col">
             <label>Min Participants</label>
             <InputNumber class="form-control" @bind-Value="Model.MinParticipants" />
+            <ValidationMessage For="() => Model.MinParticipants" />
         </div>
-
         <div class="col">
             <label>Max Participants</label>
             <InputNumber class="form-control" @bind-Value="Model.MaxParticipants" />
+            <ValidationMessage For="() => Model.MaxParticipants" />
         </div>
     </div>
 
-    <!-- TIME -->
     <div class="mb-3 mt-2">
         <label>Time of Day</label>
         <InputSelect class="form-control" @bind-Value="Model.TimeOfDay">
@@ -55,9 +66,9 @@
                 <option value="@t">@t</option>
             }
         </InputSelect>
+        <ValidationMessage For="() => Model.TimeOfDay" />
     </div>
 
-    <!-- ENVIRONMENT -->
     <div class="mb-3">
         <label>Environment</label>
         <InputSelect class="form-control" @bind-Value="Model.Environment">
@@ -66,9 +77,9 @@
                 <option value="@e">@e</option>
             }
         </InputSelect>
+        <ValidationMessage For="() => Model.Environment" />
     </div>
 
-    <!-- WEATHER -->
     <div class="mb-3">
         <label>Weather</label>
         <InputSelect class="form-control" @bind-Value="Model.AllowedWeather">
@@ -77,9 +88,9 @@
                 <option value="@w">@w</option>
             }
         </InputSelect>
+        <ValidationMessage For="() => Model.AllowedWeather" />
     </div>
 
-    <!-- SEASON -->
     <div class="mb-3">
         <label>Season</label>
         <InputSelect class="form-control" @bind-Value="Model.Season">
@@ -88,6 +99,7 @@
                 <option value="@s">@s</option>
             }
         </InputSelect>
+        <ValidationMessage For="() => Model.Season" />
     </div>
 
     <button class="btn btn-primary" type="submit">
@@ -101,6 +113,19 @@
     [Parameter] public EventCallback<Activity> OnSave { get; set; }
 
     [Parameter] public string ButtonText { get; set; } = "Save";
+
+    private IBrowserFile? uploadedMainImage;
+    private IReadOnlyList<IBrowserFile> galleryFiles = new List<IBrowserFile>();
+
+    private void HandleMainImageUpload(InputFileChangeEventArgs e)
+    {
+        uploadedMainImage = e.File;
+    }
+
+    private void HandleGalleryUpload(InputFileChangeEventArgs e)
+    {
+        galleryFiles = e.GetMultipleFiles();
+    }
 
     private async Task HandleSubmit()
     {
