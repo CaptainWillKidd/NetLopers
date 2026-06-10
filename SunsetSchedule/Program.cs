@@ -96,4 +96,5 @@ using (var scope = app.Services.CreateScope())
 Console.WriteLine("CONNECTION STRING:");
 Console.WriteLine(builder.Configuration.GetConnectionString("DefaultConnection"));
 
+
 app.Run();
