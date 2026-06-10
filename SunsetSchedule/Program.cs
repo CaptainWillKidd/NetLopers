@@ -97,4 +97,6 @@ Console.WriteLine("CONNECTION STRING:");
 Console.WriteLine(builder.Configuration.GetConnectionString("DefaultConnection"));
 
 
+// export ConnectionStrings__DefaultConnection = "Host=dpg-d8k5e4ldt1ts73aod5j0-a.oregon-postgres.render.com;Port=5432;Database=sunsetschedule_db_6wyf;Username=sunsetschedule_db_6wyf_user;Password=password;SSL Mode=Require;Trust Server Certificate=true"
+
 app.Run();
