@@ -58,8 +58,26 @@
 
 .nav-item {
     font-size: 0.9rem;
-    padding-bottom: 0.5rem;
 }
+
+.user-profile {
+    display: flex;
+    flex-direction: column;
+    color: white;
+    text-align: right;
+    line-height: 1.2;
+}
+
+.user-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.user-email {
+    font-size: 0.75rem;
+    opacity: 0.8;
+}
+    padding-bottom: 0.5rem;
 
     .nav-item:first-of-type {
         padding-top: 1rem;

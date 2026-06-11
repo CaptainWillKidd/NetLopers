@@ -1,5 +1,7 @@
 using SunsetSchedule.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.EntityFrameworkCore;
 using SunsetSchedule.Data;
 using SunsetSchedule.Services;
@@ -20,6 +22,13 @@ builder.Services.AddRazorComponents()
 builder.Services.AddScoped<ImageService>();
 builder.Services.AddScoped<ActivityService>();
 builder.Services.AddScoped<ScheduledActivityService>();
+builder.Services.AddScoped<AuthService>();
+
+// Add authentication services
+builder.Services.AddScoped<ProtectedSessionStorage>();
+builder.Services.AddScoped<AuthStateProvider>();
+builder.Services.AddScoped<AuthenticationStateProvider>(sp => sp.GetRequiredService<AuthStateProvider>());
+builder.Services.AddAuthorizationCore();
 
 var app = builder.Build();
 
@@ -86,5 +95,8 @@ using (var scope = app.Services.CreateScope())
 
 Console.WriteLine("CONNECTION STRING:");
 Console.WriteLine(builder.Configuration.GetConnectionString("DefaultConnection"));
+
+
+// export ConnectionStrings__DefaultConnection = "Host=dpg-d8k5e4ldt1ts73aod5j0-a.oregon-postgres.render.com;Port=5432;Database=sunsetschedule_db_6wyf;Username=sunsetschedule_db_6wyf_user;Password=password;SSL Mode=Require;Trust Server Certificate=true"
 
 app.Run();

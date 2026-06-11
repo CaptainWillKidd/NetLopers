@@ -1,0 +1,104 @@
+@page "/login"
+@using SunsetSchedule.Models
+@using SunsetSchedule.Services
+@using SunsetSchedule.Components
+@inject AuthService AuthService
+@inject NavigationManager Navigation
+@inject AuthStateProvider AuthStateProvider
+@rendermode InteractiveServer
+
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="card shadow-lg" style="width: 100%; max-width: 400px;">
+        <div class="card-body p-5">
+            <h2 class="card-title text-center mb-4">Login</h2>
+
+            @if (!string.IsNullOrEmpty(ErrorMessage))
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    @ErrorMessage
+                    <button type="button" class="btn-close" @onclick="() => ErrorMessage = string.Empty"></button>
+                </div>
+            }
+
+            <EditForm Model="LoginRequest" OnValidSubmit="HandleLogin" FormName="LoginForm">
+                <DataAnnotationsValidator />
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <InputText 
+                        id="email"
+                        class="form-control" 
+                        @bind-Value="LoginRequest.Email"
+                        placeholder="Enter your email"
+                        type="email" />
+                    <ValidationMessage For="() => LoginRequest.Email" class="invalid-feedback d-block" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <InputText 
+                        id="password"
+                        class="form-control" 
+                        @bind-Value="LoginRequest.Password"
+                        placeholder="Enter your password"
+                        type="password"
+                        autocomplete="current-password" />
+                    <ValidationMessage For="() => LoginRequest.Password" class="invalid-feedback d-block" />
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 mb-3" disabled="@IsLoading">
+                    @if (IsLoading)
+                    {
+                        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                        <span>Logging in...</span>
+                    }
+                    else
+                    {
+                        <span>Login</span>
+                    }
+                </button>
+            </EditForm>
+
+            <div class="text-center">
+                <p class="mb-0">Don't have an account? <a href="/register">Register here</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private LoginRequest LoginRequest { get; set; } = new();
+    private string ErrorMessage { get; set; } = string.Empty;
+    private bool IsLoading { get; set; } = false;
+
+    private async Task HandleLogin()
+    {
+        IsLoading = true;
+        ErrorMessage = string.Empty;
+
+        try
+        {
+            var result = await AuthService.LoginAsync(LoginRequest);
+
+            if (result.IsSuccess && result.Data != null)
+            {
+                // Store user in authentication state
+                await AuthStateProvider.SetUserAsync(result.Data);
+                Navigation.NavigateTo("/", forceLoad: false);
+            }
+            else
+            {
+                ErrorMessage = result.Message;
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = "An error occurred during login. Please try again.";
+            Console.WriteLine($"Login error: {ex.Message}");
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+}
