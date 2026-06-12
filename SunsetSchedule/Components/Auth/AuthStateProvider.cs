@@ -26,27 +26,21 @@ public class AuthStateProvider : AuthenticationStateProvider
         try
         {
             var userResult = await _sessionStorage.GetAsync<User>("currentUser");
-            
+
             if (userResult.Success && userResult.Value != null)
             {
                 _cachedUser = userResult.Value;
                 return CreateAuthState(userResult.Value);
             }
         }
-        catch (InvalidOperationException)
+        catch
         {
-            // ProtectedSessionStorage only works in interactive mode
-            if (_cachedUser != null)
-            {
-                return CreateAuthState(_cachedUser);
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Auth error: {ex.Message}");
+            // DO NOT fallback silently anymore
         }
 
-        return new AuthenticationState(new ClaimsPrincipal());
+        return new AuthenticationState(
+            new ClaimsPrincipal(new ClaimsIdentity())
+        );
     }
 
     private AuthenticationState CreateAuthState(User user)
