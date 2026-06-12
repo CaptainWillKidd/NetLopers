@@ -1,11 +1,11 @@
 @page "/activities/create"
-@rendermode InteractiveServer
+@using Microsoft.AspNetCore.Components.Authorization
 
-@using SunsetSchedule.Models
-@using SunsetSchedule.Components.Shared
+@rendermode InteractiveServer
 
 @inject ActivityService ActivityService
 @inject NavigationManager Nav
+@inject AuthenticationStateProvider AuthProvider
 
 <h3>Create Activity</h3>
 
@@ -17,6 +17,20 @@
     private Activity activity = new();
     private string? errorMessage;
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender) return;
+
+        var auth = await AuthProvider.GetAuthenticationStateAsync();
+
+        if (auth.User.Identity?.IsAuthenticated != true)
+        {
+            var returnUrl = Nav.ToBaseRelativePath(Nav.Uri);
+            Nav.NavigateTo($"/login?returnUrl={returnUrl}");
+            return;
+        }
+    }
+
     private async Task CreateActivity(Activity activity)
     {
         var result = await ActivityService.CreateAsync(activity);
@@ -26,8 +40,6 @@
             errorMessage = result.Error;
             return;
         }
-
-        errorMessage = null; // optional cleanup
 
         Nav.NavigateTo("/activities");
     }

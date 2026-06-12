@@ -1,9 +1,12 @@
 @page "/activities/details/{id:int}"
+@using Microsoft.AspNetCore.Components.Authorization
+
 @rendermode InteractiveServer
 
 @inject ActivityService ActivityService
 @inject ScheduledActivityService ScheduledActivityService
-@inject NavigationManager Navigation
+@inject NavigationManager Nav
+@inject AuthenticationStateProvider AuthProvider
 
 <h3>Activity Details</h3>
 
@@ -108,28 +111,47 @@ else
     private int scheduledCount;
     private List<ScheduledActivity>? scheduled;
 
-    protected override async Task OnInitializedAsync()
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        if (!firstRender) return;
+
+        var auth = await AuthProvider.GetAuthenticationStateAsync();
+
+        if (auth.User.Identity?.IsAuthenticated != true)
+        {
+            var returnUrl = Nav.ToBaseRelativePath(Nav.Uri);
+            Nav.NavigateTo($"/login?returnUrl={returnUrl}", forceLoad: true);
+            return;
+        }
+
+        // Now safe to load data AFTER auth confirmed
         activity = await ActivityService.GetByIdAsync(id);
 
         if (activity is null)
         {
-            Navigation.NavigateTo("/activities");
+            Nav.NavigateTo("/activities");
             return;
         }
 
         scheduledCount = await ActivityService.GetScheduledCountAsync(id);
-
         scheduled = await ScheduledActivityService.GetAllByActivityIdAsync(id);
+
+        StateHasChanged();
+    }
+
+    protected override Task OnInitializedAsync()
+    {
+        return Task.CompletedTask;
     }
 
     private void Edit()
     {
-        Navigation.NavigateTo($"/activities/edit/{id}");
+        Nav.NavigateTo($"/activities/edit/{id}");
     }
 
     private void Back()
     {
-        Navigation.NavigateTo("/activities");
+        Nav.NavigateTo("/activities");
     }
 }

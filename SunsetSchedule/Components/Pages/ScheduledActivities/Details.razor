@@ -1,8 +1,11 @@
 @page "/scheduledactivities/details/{id:int}"
+@using Microsoft.AspNetCore.Components.Authorization
+
 @rendermode InteractiveServer
 
 @inject ScheduledActivityService ScheduledActivityService
 @inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthProvider
 
 <h3>Scheduled Activity Details</h3>
 
@@ -81,14 +84,37 @@ else
 
     private ScheduledActivity? scheduledActivity;
 
-    protected override async Task OnInitializedAsync()
+    private bool _authChecked = false;
+
+    protected override Task OnInitializedAsync()
     {
+        return Task.CompletedTask;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender || _authChecked) return;
+
+        _authChecked = true;
+
+        var auth = await AuthProvider.GetAuthenticationStateAsync();
+
+        if (auth.User.Identity?.IsAuthenticated != true)
+        {
+            var returnUrl = Navigation.ToBaseRelativePath(Navigation.Uri);
+            Navigation.NavigateTo($"/login?returnUrl={returnUrl}", forceLoad: true);
+            return;
+        }
+
         scheduledActivity = await ScheduledActivityService.GetByIdAsync(id);
 
         if (scheduledActivity is null)
         {
             Navigation.NavigateTo("/scheduledactivities");
+            return;
         }
+
+        StateHasChanged();
     }
 
     private void GoToActivity()

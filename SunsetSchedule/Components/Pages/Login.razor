@@ -67,6 +67,8 @@
 </div>
 
 @code {
+    [SupplyParameterFromQuery]
+    public string? ReturnUrl { get; set; }
     private LoginRequest LoginRequest { get; set; } = new();
     private string ErrorMessage { get; set; } = string.Empty;
     private bool IsLoading { get; set; } = false;
@@ -84,7 +86,17 @@
             {
                 // Store user in authentication state
                 await AuthStateProvider.SetUserAsync(result.Data);
-                Navigation.NavigateTo("/", forceLoad: false);
+
+                await Task.Delay(50);
+
+                if (!string.IsNullOrWhiteSpace(ReturnUrl))
+                {
+                    Navigation.NavigateTo("/" + ReturnUrl, forceLoad: true);
+                }
+                else
+                {
+                    Navigation.NavigateTo("/", forceLoad: true);
+                }
             }
             else
             {
