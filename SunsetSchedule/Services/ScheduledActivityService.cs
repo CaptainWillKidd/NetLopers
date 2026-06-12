@@ -29,8 +29,20 @@ public class ScheduledActivityService
 
     public async Task CreateAsync(ScheduledActivity scheduledActivity)
     {
-        _db.ScheduledActivities.Add(scheduledActivity);
+        scheduledActivity.StartTime = DateTime.SpecifyKind(
+            scheduledActivity.StartTime,
+            DateTimeKind.Utc
+        );
 
+        if (scheduledActivity.EndTime.HasValue)
+        {
+            scheduledActivity.EndTime = DateTime.SpecifyKind(
+                scheduledActivity.EndTime.Value,
+                DateTimeKind.Utc
+            );
+        }
+
+        _db.ScheduledActivities.Add(scheduledActivity);
         await _db.SaveChangesAsync();
     }
 
