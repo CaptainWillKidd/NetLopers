@@ -1,8 +1,12 @@
 @page "/randomizer"
+@using Microsoft.AspNetCore.Components.Authorization
+@rendermode InteractiveServer
 
 @using SunsetSchedule.Models
 @using SunsetSchedule.Services
 @inject ActivityService ActivityService
+@inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthProvider
 
 
 <div class="container mt-4">
@@ -215,11 +219,33 @@
 </style>
 
 @code {
+    private bool _authChecked = false;
     private FilterModel filterModel = new();
     private Activity? randomActivity;
     private bool isLoading = false;
     private bool hasSearched = false;
     private string errorMessage = string.Empty;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender || _authChecked) return;
+
+        _authChecked = true;
+
+        var auth = await AuthProvider.GetAuthenticationStateAsync();
+
+        if (auth.User.Identity?.IsAuthenticated != true)
+        {
+            var returnUrl = Navigation.ToBaseRelativePath(Navigation.Uri);
+            Navigation.NavigateTo($"/login?returnUrl={returnUrl}", forceLoad: true);
+            return;
+        }
+
+        // Only load data after authentication is confirmed
+        // Your existing initialization code here
+        
+        StateHasChanged();
+    }
 
     private async Task HandleSubmit()
     {
