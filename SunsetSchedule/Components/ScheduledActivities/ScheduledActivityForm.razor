@@ -1,41 +1,54 @@
 @using SunsetSchedule.Models
+@using Microsoft.AspNetCore.Components.Forms
 
 <EditForm Model="@Model" OnValidSubmit="HandleSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
-    <!-- Activity ID -->
-    <div class="mb-3">
-        <label class="form-label">Activity Id</label>
+    <!-- Activity ID (hidden) -->
+    <input type="hidden" @bind="Model.ActivityId" />
 
-        <InputNumber class="form-control" @bind-Value="Model.ActivityId" />
+    <!-- Activity Name -->
+    <div class="mb-3">
+        <label class="form-label">Activity</label>
+        <div class="form-control-plaintext">
+            @ActivityName
+        </div>
     </div>
 
     <!-- User ID -->
     <div class="mb-3">
         <label class="form-label">User Id</label>
-
         <InputText class="form-control" @bind-Value="Model.UserId" />
+    </div>
+
+    <!-- Start Date -->
+    <div class="mb-3">
+        <label class="form-label">Start Date</label>
+        <InputDate class="form-control" @bind-Value="StartDate" />
     </div>
 
     <!-- Start Time -->
     <div class="mb-3">
-        <label class="form-label">Start Time</label>
+        <label class="form-label">Start Time (HH:mm)</label>
+        <InputText class="form-control" @bind-Value="StartTime" placeholder="14:30" />
+    </div>
 
-        <InputDate class="form-control" @bind-Value="Model.StartTime" />
+    <!-- End Date -->
+    <div class="mb-3">
+        <label class="form-label">End Date</label>
+        <InputDate class="form-control" @bind-Value="EndDate" />
     </div>
 
     <!-- End Time -->
     <div class="mb-3">
-        <label class="form-label">End Time</label>
-
-        <InputDate class="form-control" @bind-Value="Model.EndTime" />
+        <label class="form-label">End Time (HH:mm)</label>
+        <InputText class="form-control" @bind-Value="EndTime" placeholder="16:00" />
     </div>
 
     <!-- Notes -->
     <div class="mb-3">
         <label class="form-label">Notes</label>
-
         <InputTextArea class="form-control" @bind-Value="Model.Notes" />
     </div>
 
@@ -45,6 +58,16 @@
 </EditForm>
 
 @code {
+
+    private DateTime StartDate { get; set; } = DateTime.Today;
+    private DateTime EndDate { get; set; } = DateTime.Today;
+
+    private string StartTime { get; set; } = "09:00";
+    private string EndTime { get; set; } = "10:00";
+
+    [Parameter]
+    public string? ActivityName { get; set; }
+
     [Parameter]
     public ScheduledActivity Model { get; set; } = new();
 
@@ -54,8 +77,68 @@
     [Parameter]
     public string ButtonText { get; set; } = "Save";
 
+    private DateTime CombineDateAndTime(DateTime date, string time)
+    {
+        var parts = time.Split(':');
+
+        var hours = int.Parse(parts[0]);
+        var minutes = parts.Length > 1 ? int.Parse(parts[1]) : 0;
+
+        return new DateTime(
+            date.Year,
+            date.Month,
+            date.Day,
+            hours,
+            minutes,
+            0,
+            DateTimeKind.Local
+        );
+    }
     private async Task HandleSubmit()
     {
+        Model.StartTime = CombineDateAndTime(StartDate, StartTime);
+
+        if (!string.IsNullOrWhiteSpace(EndTime))
+        {
+            Model.EndTime = CombineDateAndTime(EndDate, EndTime);
+        }
+
         await OnSave.InvokeAsync(Model);
     }
+
+    // -------------------------
+    // FIXED DATETIME BINDING
+    // -------------------------
+
+    private string StartTimeString =>
+        Model.StartTime == default
+            ? ""
+            : Model.StartTime.ToString("yyyy-MM-ddTHH:mm");
+
+    private string EndTimeString =>
+        Model.EndTime.HasValue
+            ? Model.EndTime.Value.ToString("yyyy-MM-ddTHH:mm")
+            : "";
+
+    private void OnStartTimeChanged(ChangeEventArgs e)
+    {
+        if (DateTime.TryParse(e.Value?.ToString(), out var dt))
+        {
+            Model.StartTime = dt;
+        }
+    }
+
+    private void OnEndTimeChanged(ChangeEventArgs e)
+    {
+        if (DateTime.TryParse(e.Value?.ToString(), out var dt))
+        {
+            Model.EndTime = dt;
+        }
+        else
+        {
+            Model.EndTime = null;
+        }
+    }
+
+    
 }

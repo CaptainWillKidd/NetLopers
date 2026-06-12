@@ -1,26 +1,51 @@
-@page "/scheduledactivities/create"
+@page "/scheduledactivities/create/{ActivityId:int}"
 @using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components
 
 @rendermode InteractiveServer
+
 @inject ScheduledActivityService ScheduledActivityService
+@inject ActivityService ActivityService
 @inject NavigationManager Nav
 @inject AuthenticationStateProvider AuthProvider
 
-<h2>Create Scheduled Activity</h2>
+@if (activityName is null)
+{
+    <h2>Schedule Activity</h2>
+}
+else
+{
+    <h2>Schedule: @activityName</h2>
+}
 
-<ScheduledActivityForm
-    Model="@scheduledActivity"
+<ScheduledActivityForm 
+    Model="@scheduledActivity" 
+    ActivityName="@activityName" 
     OnSave="CreateScheduledActivity"
     ButtonText="Create" />
 
 @code {
+    [Parameter]
+    public int ActivityId { get; set; }
     private ScheduledActivity scheduledActivity = new();
+
+    private string? activityName;
 
     private bool _authChecked = false;
 
-    protected override Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        return Task.CompletedTask;
+        scheduledActivity.StartTime = DateTime.Now;
+        scheduledActivity.EndTime = DateTime.Now.AddHours(1);
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var activity = await ActivityService.GetByIdAsync(ActivityId);
+
+        activityName = activity?.Name ?? "Unknown Activity";
+
+        scheduledActivity.ActivityId = ActivityId;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
