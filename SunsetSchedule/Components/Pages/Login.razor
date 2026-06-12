@@ -1,4 +1,5 @@
-@page "/login"
+@page "/"
+@layout SunsetSchedule.Components.Layout.AuthLayout
 @using SunsetSchedule.Models
 @using SunsetSchedule.Services
 @using SunsetSchedule.Components
@@ -7,63 +8,63 @@
 @inject AuthStateProvider AuthStateProvider
 @rendermode InteractiveServer
 
-<div class="container d-flex justify-content-center align-items-center min-vh-100">
-    <div class="card shadow-lg" style="width: 100%; max-width: 400px;">
-        <div class="card-body p-5">
-            <h2 class="card-title text-center mb-4">Login</h2>
+<div class="login-page">
 
-            @if (!string.IsNullOrEmpty(ErrorMessage))
-            {
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    @ErrorMessage
-                    <button type="button" class="btn-close" @onclick="() => ErrorMessage = string.Empty"></button>
-                </div>
-            }
+    <div class="login-card">
 
-            <EditForm Model="LoginRequest" OnValidSubmit="HandleLogin" FormName="LoginForm">
-                <DataAnnotationsValidator />
-
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <InputText 
-                        id="email"
-                        class="form-control" 
-                        @bind-Value="LoginRequest.Email"
-                        placeholder="Enter your email"
-                        type="email" />
-                    <ValidationMessage For="() => LoginRequest.Email" class="invalid-feedback d-block" />
-                </div>
-
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <InputText 
-                        id="password"
-                        class="form-control" 
-                        @bind-Value="LoginRequest.Password"
-                        placeholder="Enter your password"
-                        type="password"
-                        autocomplete="current-password" />
-                    <ValidationMessage For="() => LoginRequest.Password" class="invalid-feedback d-block" />
-                </div>
-
-                <button type="submit" class="btn btn-primary w-100 mb-3" disabled="@IsLoading">
-                    @if (IsLoading)
-                    {
-                        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                        <span>Logging in...</span>
-                    }
-                    else
-                    {
-                        <span>Login</span>
-                    }
-                </button>
-            </EditForm>
-
-            <div class="text-center">
-                <p class="mb-0">Don't have an account? <a href="/register">Register here</a></p>
-            </div>
+        <div class="login-header">
+            <h2 class="login-title">Login</h2>
         </div>
+
+        @if (!string.IsNullOrEmpty(ErrorMessage))
+        {
+            <div class="login-error">
+                @ErrorMessage
+            </div>
+        }
+
+        <EditForm Model="LoginRequest" OnValidSubmit="HandleLogin" FormName="LoginForm">
+
+            <div class="login-field">
+                <label class="login-label" for="email">Email</label>
+
+                <InputText
+                    id="email"
+                    class="login-input"
+                    @bind-Value="LoginRequest.Email"
+                    placeholder="Enter your email"
+                    type="email" />
+            </div>
+
+            <div class="login-field">
+                <label class="login-label" for="password">Password</label>
+
+                <InputText
+                    id="password"
+                    class="login-input"
+                    @bind-Value="LoginRequest.Password"
+                    placeholder="Enter your password"
+                    type="password" />
+            </div>
+
+            <button type="submit"
+                    class="login-button"
+                    disabled="@IsLoading">
+
+                Login
+            </button>
+
+        </EditForm>
+
+        <div class="login-footer">
+            <p>
+                Don't have an account?
+                <a href="/register">Register here</a>
+            </p>
+        </div>
+
     </div>
+
 </div>
 
 @code {
