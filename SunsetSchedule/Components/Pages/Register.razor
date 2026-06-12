@@ -1,11 +1,12 @@
 @page "/register"
+@using Microsoft.AspNetCore.Authorization
+@attribute [AllowAnonymous]
 @using SunsetSchedule.Models
 @using SunsetSchedule.Services
 @using SunsetSchedule.Components
 @inject AuthService AuthService
 @inject NavigationManager Navigation
 @inject AuthStateProvider AuthStateProvider
-@rendermode InteractiveServer
 
 <div class="container d-flex justify-content-center align-items-center min-vh-100">
     <div class="card shadow-lg" style="width: 100%; max-width: 400px;">
@@ -114,20 +115,21 @@
         {
             var result = await AuthService.RegisterAsync(RegisterRequest);
 
-            if (result.IsSuccess && result.Data != null)
+            if (!result.Success || result.Data == null)
             {
-                SuccessMessage = "Account created successfully! Logging in...";
-                
-                // Auto-login after successful registration
-                await AuthStateProvider.SetUserAsync(result.Data);
-                
-                await Task.Delay(1000);
-                Navigation.NavigateTo("/", forceLoad: false);
+                ErrorMessage = result.Error ?? "Registration failed.";
+                return;
             }
-            else
-            {
-                ErrorMessage = result.Message;
-            }
+
+            SuccessMessage = "Account created successfully! Logging in...";
+
+            // IMPORTANT: ensure auth state updates cleanly
+            await AuthStateProvider.SetUserAsync(result.Data);
+
+            // small delay is fine, but optional
+            await Task.Delay(500);
+
+            Navigation.NavigateTo("/", forceLoad: false);
         }
         catch (Exception ex)
         {

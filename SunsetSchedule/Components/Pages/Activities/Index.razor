@@ -1,5 +1,9 @@
 @page "/activities"
 @rendermode InteractiveServer
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+
+
 
 @using SunsetSchedule.Components.Shared
 @inject ActivityService ActivityService

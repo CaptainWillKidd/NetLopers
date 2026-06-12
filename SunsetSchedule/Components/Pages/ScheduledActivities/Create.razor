@@ -1,5 +1,9 @@
 @page "/scheduledactivities/create"
 @rendermode InteractiveServer
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+
+
 @inject ScheduledActivityService ScheduledActivityService
 @inject NavigationManager Nav
 

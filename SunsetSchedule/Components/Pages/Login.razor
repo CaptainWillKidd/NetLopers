@@ -1,11 +1,14 @@
 @page "/login"
+@using Microsoft.AspNetCore.Authorization
+@attribute [AllowAnonymous]
+
 @using SunsetSchedule.Models
 @using SunsetSchedule.Services
 @using SunsetSchedule.Components
+
 @inject AuthService AuthService
 @inject NavigationManager Navigation
 @inject AuthStateProvider AuthStateProvider
-@rendermode InteractiveServer
 
 <div class="container d-flex justify-content-center align-items-center min-vh-100">
     <div class="card shadow-lg" style="width: 100%; max-width: 400px;">
@@ -24,32 +27,21 @@
                 <DataAnnotationsValidator />
 
                 <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <InputText 
-                        id="email"
-                        class="form-control" 
-                        @bind-Value="LoginRequest.Email"
-                        placeholder="Enter your email"
-                        type="email" />
-                    <ValidationMessage For="() => LoginRequest.Email" class="invalid-feedback d-block" />
+                    <label class="form-label">Email</label>
+                    <InputText class="form-control" @bind-Value="LoginRequest.Email" type="email" />
+                    <ValidationMessage For="() => LoginRequest.Email" class="d-block text-danger" />
                 </div>
 
                 <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <InputText 
-                        id="password"
-                        class="form-control" 
-                        @bind-Value="LoginRequest.Password"
-                        placeholder="Enter your password"
-                        type="password"
-                        autocomplete="current-password" />
-                    <ValidationMessage For="() => LoginRequest.Password" class="invalid-feedback d-block" />
+                    <label class="form-label">Password</label>
+                    <InputText class="form-control" @bind-Value="LoginRequest.Password" type="password"
+                               autocomplete="current-password" />
+                    <ValidationMessage For="() => LoginRequest.Password" class="d-block text-danger" />
                 </div>
 
-                <button type="submit" class="btn btn-primary w-100 mb-3" disabled="@IsLoading">
+                <button type="submit" class="btn btn-primary w-100" disabled="@IsLoading">
                     @if (IsLoading)
                     {
-                        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
                         <span>Logging in...</span>
                     }
                     else
@@ -59,8 +51,8 @@
                 </button>
             </EditForm>
 
-            <div class="text-center">
-                <p class="mb-0">Don't have an account? <a href="/register">Register here</a></p>
+            <div class="text-center mt-3">
+                <a href="/register">Don't have an account? Register</a>
             </div>
         </div>
     </div>
@@ -69,7 +61,7 @@
 @code {
     private LoginRequest LoginRequest { get; set; } = new();
     private string ErrorMessage { get; set; } = string.Empty;
-    private bool IsLoading { get; set; } = false;
+    private bool IsLoading { get; set; }
 
     private async Task HandleLogin()
     {
@@ -82,9 +74,12 @@
 
             if (result.IsSuccess && result.Data != null)
             {
-                // Store user in authentication state
                 await AuthStateProvider.SetUserAsync(result.Data);
-                Navigation.NavigateTo("/", forceLoad: false);
+
+                // small delay ensures auth state propagates before navigation
+                await Task.Delay(50);
+
+                Navigation.NavigateTo("/", forceLoad: true);
             }
             else
             {
@@ -94,7 +89,7 @@
         catch (Exception ex)
         {
             ErrorMessage = "An error occurred during login. Please try again.";
-            Console.WriteLine($"Login error: {ex.Message}");
+            Console.WriteLine(ex.Message);
         }
         finally
         {

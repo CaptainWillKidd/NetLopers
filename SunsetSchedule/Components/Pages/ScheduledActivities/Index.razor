@@ -1,5 +1,9 @@
 @page "/scheduledactivities"
 @rendermode InteractiveServer
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+
+
 @inject ScheduledActivityService ScheduledActivityService
 @inject NavigationManager Navigation
 
@@ -18,19 +22,19 @@ else
     @foreach (var sa in scheduledActivities)
     {
         <div class="activities-grid">
-        <div class="mb-2">
-            <a href="/scheduledactivities/details/@sa.Id" class="fw-bold text-primary text-decoration-none">
-                @sa.Activity.Name
-            </a>
+            <div class="mb-2">
+                <a href="/scheduledactivities/details/@sa.Id" class="fw-bold text-primary text-decoration-none">
+                    @sa.Activity.Name
+                </a>
 
-            <button class="btn btn-primary ms-2" @onclick="() => Details(sa.Id)">
-                Details
-            </button>
+                <button class="btn btn-primary ms-2" @onclick="() => Details(sa.Id)">
+                    Details
+                </button>
 
-            <button class="btn btn-danger ms-2" @onclick="() => Delete(sa.Id)">
-                Delete
-            </button>
-        </div>
+                <button class="btn btn-danger ms-2" @onclick="() => Delete(sa.Id)">
+                    Delete
+                </button>
+            </div>
         </div>
     }
 }

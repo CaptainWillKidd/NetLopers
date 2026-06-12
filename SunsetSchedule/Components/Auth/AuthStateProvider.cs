@@ -1,52 +1,99 @@
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using SunsetSchedule.Models;
-using SunsetSchedule.Services;
 using System.Security.Claims;
 
 namespace SunsetSchedule.Components;
 
 public class AuthStateProvider : AuthenticationStateProvider
 {
-    private readonly AuthService _authService;
     private readonly ProtectedSessionStorage _sessionStorage;
     private User? _cachedUser;
 
     public event Action? OnUserChanged;
 
-    public AuthStateProvider(AuthService authService, ProtectedSessionStorage sessionStorage)
+    public AuthStateProvider(ProtectedSessionStorage sessionStorage)
     {
-        _authService = authService;
         _sessionStorage = sessionStorage;
     }
 
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
+        // 1. fast memory check
+        if (_cachedUser != null)
+            return CreateAuthState(_cachedUser);
+
         try
         {
-            var userResult = await _sessionStorage.GetAsync<User>("currentUser");
-            
-            if (userResult.Success && userResult.Value != null)
+            // 2. session storage check
+            var result = await _sessionStorage.GetAsync<User>("currentUser");
+
+            if (result.Success && result.Value != null)
             {
-                _cachedUser = userResult.Value;
-                return CreateAuthState(userResult.Value);
-            }
-        }
-        catch (InvalidOperationException)
-        {
-            // ProtectedSessionStorage only works in interactive mode
-            if (_cachedUser != null)
-            {
+                _cachedUser = result.Value;
                 return CreateAuthState(_cachedUser);
             }
         }
-        catch (Exception ex)
+        catch
         {
-            Console.WriteLine($"Auth error: {ex.Message}");
+            // prerender / JS not ready → treat as logged out
         }
 
-        return new AuthenticationState(new ClaimsPrincipal());
+        return Anonymous();
+    }
+
+    public async Task SetUserAsync(User? user)
+    {
+        _cachedUser = user;
+
+        try
+        {
+            if (user == null)
+                await _sessionStorage.DeleteAsync("currentUser");
+            else
+                await _sessionStorage.SetAsync("currentUser", user);
+        }
+        catch
+        {
+            // ignore prerender issues
+        }
+
+        NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+        OnUserChanged?.Invoke();
+    }
+
+    public async Task<User?> GetCurrentUserAsync()
+    {
+        if (_cachedUser != null)
+            return _cachedUser;
+
+        try
+        {
+            var result = await _sessionStorage.GetAsync<User>("currentUser");
+
+            if (result.Success && result.Value != null)
+                _cachedUser = result.Value;
+        }
+        catch
+        {
+            // ignore prerender issues
+        }
+
+        return _cachedUser;
+    }
+
+    public async Task LogoutAsync()
+    {
+        _cachedUser = null;
+
+        try
+        {
+            await _sessionStorage.DeleteAsync("currentUser");
+        }
+        catch { }
+
+        NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+        OnUserChanged?.Invoke();
     }
 
     private AuthenticationState CreateAuthState(User user)
@@ -58,86 +105,12 @@ public class AuthStateProvider : AuthenticationStateProvider
             new Claim(ClaimTypes.Email, user.Email)
         };
 
-        var identity = new ClaimsIdentity(claims, "auth");
-        var principal = new ClaimsPrincipal(identity);
-        
-        return new AuthenticationState(principal);
+        var identity = new ClaimsIdentity(claims, "manual-session");
+        return new AuthenticationState(new ClaimsPrincipal(identity));
     }
 
-    public async Task SetUserAsync(User? user)
+    private AuthenticationState Anonymous()
     {
-        try
-        {
-            _cachedUser = user;
-            
-            if (user != null)
-            {
-                await _sessionStorage.SetAsync("currentUser", user);
-            }
-            else
-            {
-                await _sessionStorage.DeleteAsync("currentUser");
-            }
-
-            NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
-            OnUserChanged?.Invoke();
-        }
-        catch (InvalidOperationException)
-        {
-            // ProtectedSessionStorage can only be used in interactive mode
-            NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
-            OnUserChanged?.Invoke();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"SetUser error: {ex.Message}");
-        }
-    }
-
-    public async Task<User?> GetCurrentUserAsync()
-    {
-        try
-        {
-            if (_cachedUser != null)
-                return _cachedUser;
-
-            var userResult = await _sessionStorage.GetAsync<User>("currentUser");
-            if (userResult.Success && userResult.Value != null)
-            {
-                _cachedUser = userResult.Value;
-                return userResult.Value;
-            }
-        }
-        catch (InvalidOperationException)
-        {
-            return _cachedUser;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"GetCurrentUser error: {ex.Message}");
-        }
-        
-        return _cachedUser;
-    }
-
-    public async Task LogoutAsync()
-    {
-        try
-        {
-            _cachedUser = null;
-            await _sessionStorage.DeleteAsync("currentUser");
-            NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
-            OnUserChanged?.Invoke();
-        }
-        catch (InvalidOperationException)
-        {
-            // ProtectedSessionStorage can only be used in interactive mode
-            NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
-            OnUserChanged?.Invoke();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Logout error: {ex.Message}");
-        }
+        return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
     }
 }

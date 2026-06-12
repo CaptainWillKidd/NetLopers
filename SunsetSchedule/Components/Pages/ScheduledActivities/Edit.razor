@@ -1,5 +1,9 @@
 @page "/scheduledactivities/edit/{Id:int}"
 @rendermode InteractiveServer
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+
+
 @inject ScheduledActivityService ScheduledActivityService
 @inject NavigationManager Navigation
 

@@ -1,5 +1,9 @@
 @page "/activities/details/{id:int}"
 @rendermode InteractiveServer
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+
+
 
 @inject ActivityService ActivityService
 @inject ScheduledActivityService ScheduledActivityService

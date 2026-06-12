@@ -1,5 +1,4 @@
 using SunsetSchedule.Components;
-using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.EntityFrameworkCore;
@@ -15,33 +14,39 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString));
 
-// Add services to the container.
+/* =========================
+   BLABOR SERVER (CORE)
+========================= */
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+/* =========================
+   APPLICATION SERVICES
+========================= */
 builder.Services.AddScoped<ImageService>();
 builder.Services.AddScoped<ActivityService>();
 builder.Services.AddScoped<ScheduledActivityService>();
 builder.Services.AddScoped<AuthService>();
 
-// Add authentication services
+/* =========================
+   AUTH (MANUAL SESSION AUTH)
+========================= */
 builder.Services.AddScoped<ProtectedSessionStorage>();
 builder.Services.AddScoped<AuthStateProvider>();
-builder.Services.AddScoped<AuthenticationStateProvider>(sp => sp.GetRequiredService<AuthStateProvider>());
+
+builder.Services.AddScoped<AuthenticationStateProvider>(sp =>
+    sp.GetRequiredService<AuthStateProvider>());
+
 builder.Services.AddAuthorizationCore();
+builder.Services.AddCascadingAuthenticationState();
 
 var app = builder.Build();
 
 Console.WriteLine($"ENVIRONMENT: {app.Environment.EnvironmentName}");
 
-// Debug DB provider (optional)
-using (var scope = app.Services.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    Console.WriteLine($"DB Provider: {db.Database.ProviderName}");
-}
-
-// Configure the HTTP request pipeline.
+/* =========================
+   ERROR HANDLING
+========================= */
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
@@ -49,37 +54,32 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+/* ❌ IMPORTANT: DO NOT USE COOKIE AUTH MIDDLEWARE */
+/* REMOVE ANY OF THESE IF THEY EVER COME BACK:
+   app.UseAuthentication();
+   builder.Services.AddAuthentication();
+   AddCookie();
+*/
+
+app.UseAuthorization(); // harmless, but not strictly required for manual auth
+
 app.UseAntiforgery();
 
+/* =========================
+   APP MAPPING
+========================= */
 app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
-
-// ❌ REMOVED:
-// - EnsureCreated()
-// - Migrate()
-
-// ✅ OPTIONAL SAFE MIGRATION PATTERN (ONLY if you want automatic migrations later)
-// NOTE: still better in CI/CD for Render, not runtime
-/*
+/* =========================
+   SEEDING
+========================= */
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-    if (db.Database.GetPendingMigrations().Any())
-    {
-        db.Database.Migrate();
-    }
-}
-*/
-
-// ✅ SEEDING (safe version)
-using (var scope = app.Services.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-
-    // Only seed in development (prevents production duplication issues)
     if (app.Environment.IsDevelopment())
     {
         try
@@ -92,11 +92,5 @@ using (var scope = app.Services.CreateScope())
         }
     }
 }
-
-Console.WriteLine("CONNECTION STRING:");
-Console.WriteLine(builder.Configuration.GetConnectionString("DefaultConnection"));
-
-
-// export ConnectionStrings__DefaultConnection = "Host=dpg-d8k5e4ldt1ts73aod5j0-a.oregon-postgres.render.com;Port=5432;Database=sunsetschedule_db_6wyf;Username=sunsetschedule_db_6wyf_user;Password=password;SSL Mode=Require;Trust Server Certificate=true"
 
 app.Run();
