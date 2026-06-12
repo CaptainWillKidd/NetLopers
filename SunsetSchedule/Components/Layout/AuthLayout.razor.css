@@ -1,0 +1,52 @@
+.auth-layout {
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.background-animation {
+    position: fixed;
+    inset: 0;
+
+    background: linear-gradient(
+        -45deg,
+        #081F5C,
+        #3B0764,
+        #6A00A8,
+        #E85D3F
+    );
+
+    background-size: 400% 400%;
+
+    animation: gradientMove 12s ease infinite;
+
+    z-index: -1;
+}
+
+@keyframes gradientMove {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.card {
+    border-radius: 20px;
+}
+
+.card-title {
+    color: white;
+}
+
+.form-control {
+    background: rgba(255,255,255,.1);
+}
