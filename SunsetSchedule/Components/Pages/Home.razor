@@ -5,17 +5,17 @@
 <div class="container mt-4">
     <!-- Hero Section -->
     <div class="text-center mb-5 p-5 text-white rounded hero-section">
-        <h1 class="display-4">🌅 Welcome to Sunset Scheduler</h1>
+        <h1 class="display-4">Welcome to Sunset Scheduler</h1>
         <p class="lead">Discover, plan, and enjoy unforgettable nighttime activities</p>
         <div class="mt-4">
             <NavLink class="btn btn-light btn-lg me-2" href="/randomizer">
-                🎲 Find Random Activity
+                <i class="bi bi-shuffle me-2"></i> Find Random Activity
             </NavLink>
             <NavLink class="btn btn-outline-light btn-lg me-2" href="/activities">
-                📋 Browse Activities
+                <i class="bi bi-compass me-2"></i> Browse Activities
             </NavLink>
             <NavLink class="btn btn-outline-light btn-lg" href="/scheduledactivities">
-                📅 My Schedule
+                <i class="bi bi-calendar-week me-2"></i> My Schedule
             </NavLink>
         </div>
     </div>
@@ -26,7 +26,7 @@
         <div class="col-md-4">
             <NavLink class="card h-100 shadow-sm text-decoration-none" href="/randomizer">
                 <div class="card-body">
-                    <div class="display-1">🎯</div>
+                    <div class="display-1"><i class="bi bi-sliders display-1 icon"></i></div>
                     <h3 class="card-title h4 mt-3">1. Choose Filters</h3>
                     <p class="card-text">Select your preferences: indoor/outdoor, cost, weather, and group size.</p>
                 </div>
@@ -35,7 +35,7 @@
         <div class="col-md-4">
             <NavLink class="card h-100 shadow-sm text-decoration-none" href="/randomizer">
                 <div class="card-body">
-                    <div class="display-1">✨</div>
+                    <div class="display-1"><i class="bi bi-magic display-1 icon"></i></div>
                     <h3 class="card-title h4 mt-3">2. Get Suggestions</h3>
                     <p class="card-text">We'll find the perfect random activity that matches your criteria.</p>
                 </div>
@@ -44,7 +44,7 @@
         <div class="col-md-4">
             <NavLink class="card h-100 shadow-sm text-decoration-none" href="/scheduledactivities">
                 <div class="card-body">
-                    <div class="display-1">📅</div>
+                    <div class="display-1"><i class="bi bi-calendar-plus display-1 icon"></i></div>
                     <h3 class="card-title h4 mt-3">3. Save to Calendar</h3>
                     <p class="card-text">Add activities directly to your schedule and never miss out.</p>
                 </div>
@@ -53,12 +53,12 @@
     </div>
 
     <!-- Popular Activities -->
-    <h2 class="text-center mb-4 section-title">🌟 Popular Activities</h2>
+    <h2 class="text-center mb-4 section-title"><i class="bi bi-star-fill icon me-2"></i> Popular Activities</h2>
     <div class="row mb-5">
         <div class="col-md-4 mb-3">
             <NavLink class="card h-100 shadow-sm text-decoration-none" href="/activities">
                 <div class="card-body text-center">
-                    <div class="display-4">🥾</div>
+                    <div class="display-4"><i class="bi bi-compass display-4 icon mb-2"></i></div>
                     <h4>Hike Bridal Veil Falls</h4>
                     <p>Provo Canyon • Outdoor</p>
                     <span class="badge cost-free">Free</span>
@@ -68,7 +68,7 @@
         <div class="col-md-4 mb-3">
             <NavLink class="card h-100 shadow-sm text-decoration-none" href="/activities">
                 <div class="card-body text-center">
-                    <div class="display-4">🎲</div>
+                    <div class="display-4"><i class="bi bi-dice-5 display-4 icon mb-2"></i></div>
                     <h4>Board Game Night</h4>
                     <p>Indoor • Social</p>
                     <span class="badge cost-low">Low cost</span>
@@ -78,7 +78,7 @@
         <div class="col-md-4 mb-3">
             <NavLink class="card h-100 shadow-sm text-decoration-none" href="/activities">
                 <div class="card-body text-center">
-                    <div class="display-4">🏛️</div>
+                    <div class="display-4"><i class="bi bi-bank display-4 icon mb-2"></i></div>
                     <h4>Thanksgiving Point</h4>
                     <p>Lehi • Entertainment</p>
                     <span class="badge cost-medium">Medium</span>
@@ -89,10 +89,10 @@
 
     <!-- Call to Action -->
     <div class="text-center p-5 rounded cta-section">
-        <h2>Ready for Your Next Adventure?</h2>
+        <h2 class="second">Ready for Your Next Adventure?</h2>
         <p>Get personalized activity suggestions based on your preferences</p>
         <NavLink class="btn btn-cta btn-lg" href="/randomizer">
-            🚀 Get Started Now
+            <i class="bi bi-rocket-takeoff-fill me-2"></i> Get Started Now
         </NavLink>
     </div>
 </div>
@@ -105,6 +105,7 @@
         --primary-purple-deep: #3C0673;
         --primary-purple-darker: #211159;
         --background-light: #F2F2F2;
+        --small-buttons: #071238;
     }
 
     /* Hero Section */
@@ -115,6 +116,11 @@
     /* Section Titles */
     .section-title {
         color: var(--primary-purple-darker);
+        font-weight: 600;
+    }
+
+    .second {
+        color: var(--background-light);
         font-weight: 600;
     }
 
@@ -144,7 +150,7 @@
 
     /* Badge Colors */
     .cost-free {
-        background-color: #28a745;
+        background-color: var(--small-buttons);
         color: white;
         padding: 0.25rem 0.75rem;
         border-radius: 0.25rem;
@@ -152,7 +158,7 @@
     }
 
     .cost-low {
-        background-color: #17a2b8;
+        background-color: var(--small-buttons);
         color: white;
         padding: 0.25rem 0.75rem;
         border-radius: 0.25rem;
@@ -160,8 +166,8 @@
     }
 
     .cost-medium {
-        background-color: #ffc107;
-        color: #333;
+        background-color: var(--small-buttons);
+        color: white;
         padding: 0.25rem 0.75rem;
         border-radius: 0.25rem;
         font-size: 0.75rem;
@@ -207,5 +213,9 @@
     .btn-outline-light:hover {
         background-color: white;
         color: var(--primary-purple-dark);
+    }
+
+    .icon {
+        color: var(----primary-purple-darker)
     }
 </style>

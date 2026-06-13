@@ -10,14 +10,14 @@
 
 
 <div class="container mt-4">
-    <h1 class="text-center mb-4">🌅 Random Activity Generator</h1>
+    <h1 class="text-center mb-4"><i class="bi bi-sunset me-2" style="color: #211159;"></i> Random Activity Generator</h1>
     <p class="text-center text-muted mb-4"> Tell us what you're looking for, and we'll suggest the perfect nighttime activity!</p>
     <div class="row">
         <!--filter for column -->
         <div class="col-md-4">
             <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0">🎯 Define Your Criteria</h5>
+                <div class="card-header text-white" style="background-color: #211159;">
+                    <h5 class="mb-0"><i class="bi bi-sliders me-2" style="color: #ffffff;"></i> Define Your Criteria</h5>
                 </div>
                 <div class="card-body">
                     <EditForm Model="@filterModel" OnValidSubmit="@HandleSubmit" FormName="RandomizerForm">
@@ -26,7 +26,7 @@
 
                         <!-- Indoor/Outdoor -->
                         <div class="mb-3">
-                            <label class="form-label" fw-bold>🏠 Environment</label>
+                            <label class="form-label" fw-bold> <i class="bi bi-house-door me-2" style="color: #211159;"></i>Environment</label>
                             <select @bind="filterModel.Environment" class="form-select">
                                 <option value="">Any</option>
                                 @foreach (var env in Enum.GetValues<ActivityEnvironment>())
@@ -38,7 +38,7 @@
 
                         <!-- Cost -->
                         <div class="mb-3">
-                            <label class="form-label fw-bold">💰 Cost Level</label>
+                            <label class="form-label fw-bold"><i class="bi bi-currency-dollar me-1" style="color: #211159;"></i> Cost Level</label>
                             <select @bind="filterModel.Cost" class="form-select">
                                 <option value="">Any</option>
                                 @foreach (var cost in Enum.GetValues<CostLevel>())
@@ -50,7 +50,7 @@
 
                         <!-- Weather -->
                         <div class="mb-3">
-                            <label class="form-label fw-bold">🌤️ Weather Preference</label>
+                            <label class="form-label fw-bold"><i class="bi bi-cloud-sun me-2" style="color: #211159;"></i> Weather Preference</label>
                             <select @bind="filterModel.Weather" class="form-select">
                                 <option value="">Any</option>
                                 @foreach (var weather in Enum.GetValues<WeatherType>())
@@ -62,7 +62,7 @@
 
                         <!-- Time of Day -->
                         <div class="mb-3">
-                            <label class="form-label fw-bold">⏰ Time of Day</label>
+                            <label class="form-label fw-bold"><i class="bi bi-clock me-2" style="color: #211159;"></i> Time of Day</label>
                             <select @bind="filterModel.TimeOfDay" class="form-select">
                                 <option value="">Any</option>
                                 @foreach (var time in Enum.GetValues<TimeOfDay>())
@@ -74,7 +74,7 @@
 
                         <!-- Category -->
                         <div class="mb-3">
-                            <label class="form-label fw-bold">🎭 Activity Category</label>
+                            <label class="form-label fw-bold"><i class="bi bi-masks me-2" style="color: #211159;"></i> Activity Category</label>
                             <select @bind="filterModel.Category" class="form-select">
                                 <option value="">Any</option>
                                 @foreach (var cat in Enum.GetValues<ActivityCategory>())
@@ -86,7 +86,7 @@
 
                         <!-- Season -->
                         <div class="mb-3">
-                            <label class="form-label fw-bold">🌸 Season</label>
+                            <label class="form-label fw-bold"><i class="bi bi-flower1 me-2" style="color: #211159;"></i> Season</label>
                             <select @bind="filterModel.Season" class="form-select">
                                 <option value="">Any</option>
                                 @foreach (var season in Enum.GetValues<Season>())
@@ -98,17 +98,17 @@
 
                         <!-- Group Size -->
                         <div class="mb-3">
-                            <label class="form-label fw-bold">👥 Group Size</label>
+                            <label class="form-label fw-bold"><i class="bi bi-people me-2" style="color: #211159;"></i> Group Size</label>
                             <input type="number" @bind="filterModel.GroupSize" class="form-control" min="1" max="100" />
                             <small class="text-muted">Number of people (1-100)</small>
                         </div>
 
-                        <button type="submit" class="btn btn-primary w-100 py-2" @disabled="isLoading">
+                        <button type="submit" class="btn btn-primary w-100 py-2" @disabled="isLoading" style="background-color: #D9525E;">
                             @if (isLoading)
                             {
                                 <span class="spinner-border spinner-border-sm me-2"></span>
                             }
-                            🎲 Generate Random Activity
+                            <i class="bi bi-shuffle me-2" style="color: #ffffff;"></i> Generate Random Activity
                         </button>
                     </EditForm>
                 </div>
@@ -118,8 +118,8 @@
         <!--Results Column-->
         <div class="col-md-8">
             <div class="card shadow-sm">
-                <div class="card-header bg-success text-white">
-                    <h5 class="mb-0">✨ Your Suggested Activity</h5>
+                <div class="card-header text-white" style="background-color: #211159;">
+                    <h5 class="mb-0"><i class="bi bi-magic me-2" style="color: #ffffff;"></i> Your Suggested Activity</h5>
                 </div>
                 <div class="card-body">
                     @if (isLoading)
@@ -148,12 +148,12 @@
                             <div class="row mt-4">
                                 <div class="col-md-6">
                                     <div class="info-box p-3 bg-light rounded mb-2">
-                                        <strong>🏠 Environment:</strong> @randomActivity.Environment
+                                        <strong><i class="bi bi-house-door me-2" style="color: #211159;"></i> Environment:</strong> @randomActivity.Environment
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="info-box p-3 bg-light rounded mb-2">
-                                        <strong>💰 Cost:</strong> @randomActivity.Cost
+                                        <strong><i class="bi bi-currency-dollar me-1" style="color: #211159;"></i> Cost:</strong> @randomActivity.Cost
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -163,29 +163,29 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="info-box p-3 bg-light rounded mb-2">
-                                        <strong>⏰ Duration:</strong> @randomActivity.DurationMinutes minutes
+                                        <strong><i class="bi bi-clock me-2" style="color: #211159;"></i> Duration:</strong> @randomActivity.DurationMinutes minutes
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="info-box p-3 bg-light rounded mb-2">
-                                        <strong>🌤️ Best Weather:</strong> @randomActivity.AllowedWeather
+                                        <strong><i class="bi bi-cloud-sun me-2" style="color: #211159;"></i> Best Weather:</strong> @randomActivity.AllowedWeather
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="info-box p-3 bg-light rounded mb-2">
-                                        <strong>📍 Location:</strong> @(randomActivity.Location ?? "Flexible")
+                                        <strong><i class="bi bi-geo-alt-fill me-2" style="color: #211159;"></i> Location:</strong> @(randomActivity.Location ?? "Flexible")
                                     </div>
                                 </div>
                             </div>
                             <button class="btn btn-success btn-lg w-100 mt-3" @onclick="() => AddToCalendar(randomActivity)">
-                                📅 Add to Calendar
+                                <i class="bi bi-calendar-plus-fill me-2" style="color: #ffffff;"></i> Add to Calendar
                             </button>
                         </div>
                     } 
                     else if (hasSearched)
                     {
                         <div class="text-center py-5 text-muted">
-                            <h3>😕 No Activities Found</h3>
+                            <h3><i class="bi bi-search-heart-fill me-2"></i> No Activities Found</h3>
                             <p>@errorMessage</p>
                             <p>Try adjusting your filters and generate again!</p>
                         </div>
@@ -193,7 +193,7 @@
                     else
                     {
                         <div class="text-center py-5 text-muted">
-                            <h3>🎯 Ready for Adventure?</h3>
+                            <h3><i class="bi bi-compass-fill me-2"></i> Ready for Adventure?</h3>
                             <p>Select your preferences and click "Generate Random Activity"</p>
                             <p class="small">We'll suggest the perfect nighttime activity for you!</p>
                         </div>
@@ -205,6 +205,14 @@
 </div>
 
 <style>
+    /* Color Theme Variables */
+    :root {
+        --primary-red: #D9525E;
+        --primary-purple-dark: #6503A6;
+        --primary-purple-deep: #3C0673;
+        --primary-purple-darker: #211159;
+        --background-light: #F2F2F2;
+    }
     .info-box {
         transition: transform 0.2s;
     }
