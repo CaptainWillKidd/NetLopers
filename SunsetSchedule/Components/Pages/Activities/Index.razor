@@ -32,6 +32,11 @@ else
 
             <!-- Thumbnail -->
             <img src="@img" class="activity-image" />
+            
+            <!-- Edit button -->
+            <button class="activity-edit-btn" @onclick="() => Edit(a.Id)">
+                Edit
+            </button>
 
             <!-- Content -->
             <div class='activity-content'>
@@ -42,8 +47,8 @@ else
 
             <!-- Actions -->
             <div class="activity-buttons">
-                <button class="btn btn-primary btn-sm" @onclick="() => Edit(a.Id)">
-                    Edit
+                <button class="btn btn-primary btn-sm" @onclick="() => ViewDetails(a.Id)">
+                    Details
                 </button>
 
                 <button class="btn btn-danger btn-sm" @onclick="() => Delete(a.Id)">

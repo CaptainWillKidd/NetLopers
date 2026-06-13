@@ -28,23 +28,30 @@ else
 
             var galleryImages = images
                 .OrderBy(i => i.DisplayOrder)
-                .Skip(1)
                 .ToList();
         }
 
-        <img src="@mainImage" class="img-fluid mb-3" />
+        <div class="activity-hero">
+        <img src="@selectedImage" class="activity-main-image" />
+        </div>
 
+
+        
         @if (galleryImages.Any())
         {
             <div class="gallery">
                 @foreach (var image in galleryImages)
                 {
-                    <img src="@image.ImagePath" class="gallery-thumbnail" />
+                    <img src="@image.ImagePath"
+                    class="gallery-thumbnail @(selectedImage == image.ImagePath ? "active" : "")"
+                    @onclick="() => SelectImage(image.ImagePath)" />
                 }
             </div>
         }
 
-        <h4>@activity.Name</h4>
+        <h2 class="activity-title">
+         @activity.Name
+         </h2> 
         <p>@activity.Description</p>
 
         <hr />
@@ -61,9 +68,19 @@ else
             @scheduledCount
         </p>
 
-        <button class="btn btn-primary" @onclick="Edit">Edit</button>
-        <button class="btn btn-primary" @onclick="() => ScheduleActivity(activity.Id)">Schedule</button>
-        <button class="btn btn-secondary ms-2" @onclick="Back">Back</button>
+        <div class="details-actions">
+         <button class="btn-edit" @onclick="Edit">
+         Edit
+          </button>
+
+         <button class="btn-schedule" @onclick="() => ScheduleActivity(activity.Id)">
+         Schedule
+         </button>
+
+         <button class="btn-back" @onclick="Back">
+         Back
+         </button>
+        </div>
     </div>
 
     <div class="card p-3">
@@ -111,6 +128,7 @@ else
     private Activity? activity;
     private int scheduledCount;
     private List<ScheduledActivity>? scheduled;
+    private string? selectedImage;
 
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -134,6 +152,19 @@ else
             Nav.NavigateTo("/activities");
             return;
         }
+
+        activity = await ActivityService.GetByIdAsync(id);
+
+     if (activity is null)
+{
+    Nav.NavigateTo("/activities");
+    return;
+}
+
+     selectedImage = activity.Images?
+     .OrderBy(i => i.DisplayOrder)
+     .FirstOrDefault()?.ImagePath
+     ?? "/images/default-activity.webp";
 
         scheduledCount = await ActivityService.GetScheduledCountAsync(id);
         scheduled = await ScheduledActivityService.GetAllByActivityIdAsync(id);
@@ -161,4 +192,8 @@ else
     {
         Nav.NavigateTo("/activities");
     }
+    private void SelectImage(string imagePath)
+     {
+     selectedImage = imagePath;
+      }   
 }
