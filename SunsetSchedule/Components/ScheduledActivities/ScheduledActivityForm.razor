@@ -1,7 +1,7 @@
 @using SunsetSchedule.Models
 @using Microsoft.AspNetCore.Components.Forms
 
-<EditForm Model="@Model" OnValidSubmit="HandleSubmit">
+<EditForm Model="@Model" OnSubmit="HandleSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
@@ -16,9 +16,9 @@
         </div>
     </div>
 
-    <!-- User ID -->
+    <!-- User Name -->
     <div class="mb-3">
-        <label class="form-label">User Id</label>
+        <label class="form-label">User Name</label>
         <InputText class="form-control" @bind-Value="Model.UserId" />
     </div>
 
@@ -50,7 +50,15 @@
     <div class="mb-3">
         <label class="form-label">Notes</label>
         <InputTextArea class="form-control" @bind-Value="Model.Notes" />
+        <ValidationMessage For="() => Model.Notes" />
     </div>
+
+    @if (!string.IsNullOrWhiteSpace(ValidationError))
+    {
+        <div class="alert alert-danger">
+            @ValidationError
+        </div>
+    }
 
     <button type="submit" class="btn btn-success">
         @ButtonText
@@ -59,11 +67,14 @@
 
 @code {
 
+    // ✅ SAFE: non-nullable DateTime (prevents InputDate issues)
     private DateTime StartDate { get; set; } = DateTime.Today;
     private DateTime EndDate { get; set; } = DateTime.Today;
 
-    private string StartTime { get; set; } = "09:00";
-    private string EndTime { get; set; } = "10:00";
+    private string StartTime { get; set; } = "";
+    private string EndTime { get; set; } = "";
+
+    private string? ValidationError;
 
     [Parameter]
     public string? ActivityName { get; set; }
@@ -94,51 +105,40 @@
             DateTimeKind.Local
         );
     }
+
     private async Task HandleSubmit()
     {
-        Model.StartTime = CombineDateAndTime(StartDate, StartTime);
+        Console.WriteLine("HANDLE SUBMIT CALLED");
 
-        if (!string.IsNullOrWhiteSpace(EndTime))
+        ValidationError = null;
+
+        if (string.IsNullOrWhiteSpace(StartTime))
         {
-            Model.EndTime = CombineDateAndTime(EndDate, EndTime);
+            ValidationError = "Start Time is required.";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(EndTime))
+        {
+            ValidationError = "End Time is required.";
+            return;
+        }
+
+        Model.StartTime = CombineDateAndTime(StartDate, StartTime);
+        Model.EndTime = CombineDateAndTime(EndDate, EndTime);
+
+        if (Model.StartTime < DateTime.Now)
+        {
+            ValidationError = "Start time cannot be in the past.";
+            return;
+        }
+
+        if (Model.EndTime <= Model.StartTime)
+        {
+            ValidationError = "End time must be after start time.";
+            return;
         }
 
         await OnSave.InvokeAsync(Model);
     }
-
-    // -------------------------
-    // FIXED DATETIME BINDING
-    // -------------------------
-
-    private string StartTimeString =>
-        Model.StartTime == default
-            ? ""
-            : Model.StartTime.ToString("yyyy-MM-ddTHH:mm");
-
-    private string EndTimeString =>
-        Model.EndTime.HasValue
-            ? Model.EndTime.Value.ToString("yyyy-MM-ddTHH:mm")
-            : "";
-
-    private void OnStartTimeChanged(ChangeEventArgs e)
-    {
-        if (DateTime.TryParse(e.Value?.ToString(), out var dt))
-        {
-            Model.StartTime = dt;
-        }
-    }
-
-    private void OnEndTimeChanged(ChangeEventArgs e)
-    {
-        if (DateTime.TryParse(e.Value?.ToString(), out var dt))
-        {
-            Model.EndTime = dt;
-        }
-        else
-        {
-            Model.EndTime = null;
-        }
-    }
-
-    
 }
