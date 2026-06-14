@@ -6,8 +6,21 @@
 @inject NavigationManager Navigation
 @inject AuthenticationStateProvider AuthProvider
 
-
 <h3>Edit Scheduled Activity</h3>
+
+@if (!string.IsNullOrWhiteSpace(ErrorMessage))
+{
+    <div class="alert alert-danger">
+        @ErrorMessage
+    </div>
+}
+
+@if (!string.IsNullOrWhiteSpace(SuccessMessage))
+{
+    <div class="alert alert-success">
+        @SuccessMessage
+    </div>
+}
 
 @if (scheduledActivity is null)
 {
@@ -15,10 +28,7 @@
 }
 else
 {
-    <ScheduledActivityForm
-        Model="@scheduledActivity"
-        OnSave="UpdateScheduledActivity"
-        ButtonText="Update" />
+    <ScheduledActivityForm Model="@scheduledActivity" OnSave="UpdateScheduledActivity" ButtonText="Update" />
 }
 
 @code {
@@ -26,12 +36,10 @@ else
 
     private ScheduledActivity? scheduledActivity;
 
-    private bool _authChecked = false;
+    private string? ErrorMessage;
+    private string? SuccessMessage;
 
-    protected override Task OnInitializedAsync()
-    {
-        return Task.CompletedTask;
-    }
+    private bool _authChecked = false;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -48,12 +56,20 @@ else
             return;
         }
 
-        scheduledActivity = await ScheduledActivityService.GetByIdAsync(Id);
-
-        if (scheduledActivity is null)
+        try
         {
-            Navigation.NavigateTo("/scheduledactivities");
-            return;
+            scheduledActivity = await ScheduledActivityService.GetByIdAsync(Id);
+
+            if (scheduledActivity is null)
+            {
+                ErrorMessage = "Scheduled activity not found.";
+                return;
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = "Failed to load scheduled activity.";
+            Console.WriteLine(ex.Message);
         }
 
         StateHasChanged();
@@ -61,17 +77,32 @@ else
 
     private async Task UpdateScheduledActivity(ScheduledActivity a)
     {
-        var auth = await AuthProvider.GetAuthenticationStateAsync();
-
-        if (auth.User.Identity?.IsAuthenticated != true)
+        try
         {
-            var returnUrl = Navigation.ToBaseRelativePath(Navigation.Uri);
-            Navigation.NavigateTo($"/login?returnUrl={returnUrl}", forceLoad: true);
-            return;
+            ErrorMessage = null;
+            SuccessMessage = null;
+
+            var auth = await AuthProvider.GetAuthenticationStateAsync();
+
+            if (auth.User.Identity?.IsAuthenticated != true)
+            {
+                var returnUrl = Navigation.ToBaseRelativePath(Navigation.Uri);
+                Navigation.NavigateTo($"/login?returnUrl={returnUrl}", forceLoad: true);
+                return;
+            }
+
+            await ScheduledActivityService.UpdateAsync(a);
+
+            SuccessMessage = "Scheduled activity updated successfully.";
+
+            await Task.Delay(300);
+
+            Navigation.NavigateTo("/scheduledactivities");
         }
-
-        await ScheduledActivityService.UpdateAsync(a);
-
-        Navigation.NavigateTo("/scheduledactivities");
+        catch (Exception ex)
+        {
+            ErrorMessage = "Something went wrong while updating the scheduled activity.";
+            Console.WriteLine(ex.Message);
+        }
     }
 }
