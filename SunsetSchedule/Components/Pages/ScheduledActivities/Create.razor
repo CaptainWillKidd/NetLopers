@@ -9,6 +9,20 @@
 @inject NavigationManager Nav
 @inject AuthenticationStateProvider AuthProvider
 
+@if (!string.IsNullOrWhiteSpace(ErrorMessage))
+{
+    <div class="alert alert-danger">
+        @ErrorMessage
+    </div>
+}
+
+@if (!string.IsNullOrWhiteSpace(SuccessMessage))
+{
+    <div class="alert alert-success">
+        @SuccessMessage
+    </div>
+}
+
 @if (activityName is null)
 {
     <h2>Schedule Activity</h2>
@@ -18,18 +32,18 @@ else
     <h2>Schedule: @activityName</h2>
 }
 
-<ScheduledActivityForm 
-    Model="@scheduledActivity" 
-    ActivityName="@activityName" 
-    OnSave="CreateScheduledActivity"
-    ButtonText="Create" />
+<ScheduledActivityForm Model="@scheduledActivity" ActivityName="@activityName" OnSave="CreateScheduledActivity"
+                       ButtonText="Create" />
 
 @code {
     [Parameter]
     public int ActivityId { get; set; }
-    private ScheduledActivity scheduledActivity = new();
 
+    private ScheduledActivity scheduledActivity = new();
     private string? activityName;
+
+    private string? ErrorMessage;
+    private string? SuccessMessage;
 
     private bool _authChecked = false;
 
@@ -41,11 +55,19 @@ else
 
     protected override async Task OnParametersSetAsync()
     {
-        var activity = await ActivityService.GetByIdAsync(ActivityId);
+        try
+        {
+            var activity = await ActivityService.GetByIdAsync(ActivityId);
 
-        activityName = activity?.Name ?? "Unknown Activity";
+            activityName = activity?.Name ?? "Unknown Activity";
 
-        scheduledActivity.ActivityId = ActivityId;
+            scheduledActivity.ActivityId = ActivityId;
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = "Failed to load activity details.";
+            Console.WriteLine(ex.Message);
+        }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -68,17 +90,33 @@ else
 
     private async Task CreateScheduledActivity(ScheduledActivity a)
     {
-        var auth = await AuthProvider.GetAuthenticationStateAsync();
-
-        if (auth.User.Identity?.IsAuthenticated != true)
+        try
         {
-            var returnUrl = Nav.ToBaseRelativePath(Nav.Uri);
-            Nav.NavigateTo($"/login?returnUrl={returnUrl}", forceLoad: true);
-            return;
+            ErrorMessage = null;
+            SuccessMessage = null;
+
+            var auth = await AuthProvider.GetAuthenticationStateAsync();
+
+            if (auth.User.Identity?.IsAuthenticated != true)
+            {
+                var returnUrl = Nav.ToBaseRelativePath(Nav.Uri);
+                Nav.NavigateTo($"/login?returnUrl={returnUrl}", forceLoad: true);
+                return;
+            }
+
+            await ScheduledActivityService.CreateAsync(a);
+
+            SuccessMessage = "Scheduled activity created successfully.";
+
+            // small delay so user sees message
+            await Task.Delay(300);
+
+            Nav.NavigateTo("/scheduledactivities");
         }
-
-        await ScheduledActivityService.CreateAsync(a);
-
-        Nav.NavigateTo("/scheduledactivities");
+        catch (Exception ex)
+        {
+            ErrorMessage = "Something went wrong while creating the scheduled activity.";
+            Console.WriteLine(ex.Message);
+        }
     }
 }
