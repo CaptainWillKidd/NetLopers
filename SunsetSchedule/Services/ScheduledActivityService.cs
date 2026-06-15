@@ -48,6 +48,15 @@ public class ScheduledActivityService
 
     public async Task UpdateAsync(ScheduledActivity scheduledActivity)
     {
+        scheduledActivity.StartTime =
+            scheduledActivity.StartTime.ToUniversalTime();
+
+        if (scheduledActivity.EndTime.HasValue)
+        {
+            scheduledActivity.EndTime =
+                scheduledActivity.EndTime.Value.ToUniversalTime();
+        }
+
         _db.ScheduledActivities.Update(scheduledActivity);
 
         await _db.SaveChangesAsync();
