@@ -34,14 +34,14 @@ else
 
         <p>
             <strong>Start:</strong>
-            @scheduledActivity.StartTime
+            @scheduledActivity.StartTime.ToLocalTime().ToString("MM/dd/yyyy h:mm tt")
         </p>
 
         @if (scheduledActivity.EndTime.HasValue)
         {
             <p>
                 <strong>End:</strong>
-                @scheduledActivity.EndTime.Value
+                @scheduledActivity.EndTime.Value.ToLocalTime().ToString("MM/dd/yyyy h:mm tt")
             </p>
         }
 
